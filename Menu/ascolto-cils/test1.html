@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova di Comprensione Orale - Test Italiano</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 10px auto 20px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 1em;
+        }
+
+        .content {
+            padding: 25px;
+            margin-top: 80px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-right: 8px;
+        }
+
+        .question-text {
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .option:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: #3498db;
+        }
+
+        .option.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .correct {
+            border-color: #27ae60 !important;
+            background: #d5f4e6 !important;
+        }
+
+        .incorrect {
+            border-color: #e74c3c !important;
+            background: #fadbd8 !important;
+        }
+
+        .audio-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .audio-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .test-nav-btn {
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            color: #2c3e50;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-nav-btn:hover {
+            background: #d5dbdb;
+            border-color: #95a5a6;
+        }
+
+        .test-nav-btn.active {
+            background: #ecf0f1;
+            border-color: #bdc3c7;
+            color: #2c3e50;
+        }
+
+        .test-nav-btn:disabled {
+            background: #ecf0f1;
+            border-color: #bdc3c7;
+            color: #95a5a6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .test-nav-btn.completed {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-color: #27ae60;
+            color: white;
+        }
+
+        #backBtn:hover {
+            background: rgba(255,255,255,0.3) !important;
+            border-color: rgba(255,255,255,0.5) !important;
+            transform: translateY(-50%) scale(1.05) !important;
+        }
+
+        .test-progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 23px;
+            z-index: 1;
+        }
+
+        .test-nav-btn span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .timer-warning {
+            background: #f39c12 !important;
+        }
+
+        .timer-critical {
+            background: #e74c3c !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .test-container {
+            display: none;
+        }
+
+        .test-container.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 5px auto 20px auto;
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .content {
+                padding: 15px;
+                margin-top: 100px;
+            }
+            
+            .question {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .option {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            #timerContainer {
+                bottom: 10px !important;
+                right: 10px !important;
+                padding: 8px 12px !important;
+                min-width: 120px !important;
+            }
+
+            #timerContainer #timerDisplay {
+                font-size: 1.3em !important;
+                margin-bottom: 3px !important;
+            }
+
+            #timerContainer div:nth-child(2) {
+                font-size: 0.7em !important;
+            }
+
+            #timerContainer #startExamBtn {
+                padding: 6px 12px !important;
+                font-size: 0.8em !important;
+                margin-top: 8px !important;
+            }
+
+            #backBtn {
+                bottom: 10px !important;
+                left: 10px !important;
+                padding: 10px 15px !important;
+                font-size: 0.85em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎧 Comprensione orale</h1>
+            <p>Ascolta attentamente ed esegui le tre prove. Clicca sul pulsante in fondo alla pagina per avviare l’audio.</p>
+        </div>
+
+        <div class="content">
+            <!-- Timer Display -->
+            <div id="timerContainer" style="position: fixed; bottom: 20px; right: 20px; background: #e74c3c; color: white; padding: 15px 20px; border-radius: 15px; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.3); min-width: 200px;">
+                <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 5px; text-align: center;" id="timerDisplay">35:02</div>
+                <div style="font-size: 0.85em; text-align: center; opacity: 0.9;">Tempo rimanente</div>
+                <div style="margin-top: 12px; text-align: center;">
+                    <button id="startExamBtn" style="background: white; color: #e74c3c; border: none; padding: 8px 20px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.9em;">
+                        🎯 Inizia esame
+                    </button>
+                </div>
+                <!-- Progress Bar -->
+                <div id="progressContainer" style="margin-top: 12px; background: rgba(255,255,255,0.2); height: 4px; border-radius: 2px; overflow: hidden; display: none;">
+                    <div id="progressBar" style="height: 100%; background: white; width: 0%; transition: width 1s ease; border-radius: 2px;"></div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <button id="backBtn" onclick="window.location.href='ascolto.html'" style="position: fixed; bottom: 20px; left: 20px; background: rgba(44, 62, 80, 0.9); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                ← Indietro
+            </button>
+
+
+
+            <div style="margin-bottom: 15px;">
+                <audio id="examAudio" style="width: 100%; max-width: 350px; display: block; margin: 0 auto;">
+                    <source src="audio/audio1.mp3" type="audio/mpeg">
+                    Il tuo browser non supporta l'elemento audio. 
+                    <a href="audio/audio1.mp3" target="_blank" rel="noopener noreferrer">Clicca qui per ascoltare l'audio</a>
+                </audio>
+            </div>
+
+            <!-- Test Navigation -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button class="test-nav-btn active" id="test1Btn">
+                    <div class="test-progress-fill" id="test1Progress"></div>
+                    <span>Prova 1</span>
+                </button>
+                <button class="test-nav-btn" id="test2Btn" disabled>
+                    <div class="test-progress-fill" id="test2Progress"></div>
+                    <span>Prova 2</span>
+                </button>
+                <button class="test-nav-btn" id="test3Btn" disabled>
+                    <div class="test-progress-fill" id="test3Progress"></div>
+                    <span>Prova 3</span>
+                </button>
+                <button class="test-nav-btn" id="resultsBtn" style="display: none; background: linear-gradient(135deg, #8e44ad, #9b59b6); border-color: #8e44ad; color: white;">
+                    <span>📊 Risultati</span>
+                </button>
+            </div>
+
+            <!-- Instructions that change based on current test -->
+            <div id="testInstructions" style="background: #e8f4fd; border: 2px solid #3498db; border-radius: 10px; padding: 15px; margin-bottom: 25px; text-align: center; font-weight: 500; color: #2c3e50;">
+                <span id="instructionText">Ascolta i testi. Poi completa le frasi. Scegli una delle quattro proposte di completamento.</span>
+            </div>
+
+            <div id="test1" class="test-container active">
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 1</h2>
+                <form id="testForm1">
+                    <div class="question">
+                    <div class="question-text"><span class="question-number">1.</span> <strong>Silvia e il suo amico parlano</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            <span>A) della difficoltà dell'esame di storia.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            <span>B) della possibilità di preparare insieme un esame.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            <span>C) dell'argomento della tesina di storia.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            <span>D) dell'ultima lezione del Professor Nicoli.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">2.</span> <strong>Il ragazzo chiede informazioni sull'iscrizione a tempo parziale perché</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            <span>A) vuole frequentare solo alcuni corsi.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            <span>B) lavora e vuole migliorare la sua preparazione.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            <span>C) vuole seguire anche i corsi di un altro istituto di formazione.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            <span>D) ha problemi con gli orari delle lezioni all'università.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">3.</span> <strong>Nel colloquio con il professore la studentessa chiede</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            <span>A) consigli per decidere il suo percorso formativo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            <span>B) spiegazioni sul programma del corso del professore.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            <span>C) indicazioni per la presentazione del piano di studio.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            <span>D) argomenti da approfondire per una tesina.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">4.</span> <strong>In base al risultato delle prove la studentessa</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            <span>A) può accedere alla parte orale dell'esame.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            <span>B) deve ripetere entrambe le parti dell'esame scritto.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            <span>C) deve rifare una parte dell'esame scritto.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            <span>D) può chiedere di vedere le prove e gli errori.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">5.</span> <strong>Gli studenti possono servirsi delle aule multimediali se</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            <span>A) hanno richiesto le credenziali d'accesso alla Segreteria.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            <span>B) il docente del corso fa lezione nelle aule multimediali.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            <span>C) sono terminate le attività didattiche nelle aule multimediali.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            <span>D) hanno fatto la prenotazione attraverso il sito.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">6.</span> <strong>Prendere appunti serve soprattutto a</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            <span>A) integrare i testi per l'esame.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            <span>B) fare buona impressione sul professore.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            <span>C) fissare i punti principali della lezione.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            <span>D) selezionare gli argomenti da studiare sul libro.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-text"><span class="question-number">7.</span> <strong>Grazie alle iniziative dell'Azienda Regionale per il Diritto allo Studio Universitario gli studenti possono</strong></div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            <span>A) avere sconti speciali per seguire in trasferta la squadra Emma Villas.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            <span>B) partecipare ad un campionato universitario di pallavolo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            <span>C) fare allenamenti di pallavolo insieme a giocatori professionisti.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            <span>D) vedere le partite del campionato di pallavolo nel palazzetto dell'Emma Villas.</span>
+                        </label>
+                    </div>
+                </div>
+
+
+                </form>
+            </div>
+
+            <div id="test2" class="test-container">
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 2</h2>
+                <form id="testForm2">
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">1.</span> <strong>L'incontro con l'attore Michele Riondino</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q1" value="A">
+                                <span>A) apre un ciclo di lezioni universitarie.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="B">
+                                <span>B) si colloca in una serie di appuntamenti con attori famosi.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="C">
+                                <span>C) ha lo scopo di presentare uno spettacolo teatrale.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="D">
+                                <span>D) serve a pubblicizzare una nuova trasmissione televisiva.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">2.</span> <strong>Secondo l'intervistatore, nella vita di un artista ha molta importanza</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q2" value="A">
+                                <span>A) il periodo dedicato alla preparazione professionale.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="B">
+                                <span>B) la presenza di una persona che dia fiducia.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="C">
+                                <span>C) poter scegliere la città dove vivere.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="D">
+                                <span>D) avere un carattere determinato.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">3.</span> <strong>Secondo l'intervistatore Michele Riondino è diventato popolare quando</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q3" value="A">
+                                <span>A) ha organizzato laboratori teatrali per ragazzi.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="B">
+                                <span>B) è stato ospite in una trasmissione televisiva.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="C">
+                                <span>C) ha lavorato per il cinema e la TV.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="D">
+                                <span>D) da piccolo ha recitato in teatro.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">4.</span> <strong>Michele Riondino ha deciso di fare l'attore di teatro</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q4" value="A">
+                                <span>A) per evadere dalla vita monotona della città di Taranto.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="B">
+                                <span>B) perché ha sempre avuto una forte curiosità verso questo mondo.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="C">
+                                <span>C) perché pensava di poter guadagnare bene.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="D">
+                                <span>D) per seguire l'esempio di un suo insegnante.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">5.</span> <strong>Appena arrivato a Roma Michele</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q5" value="A">
+                                <span>A) non pensava di riuscire ad entrare all'Accademia d'Arte.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="B">
+                                <span>B) era molto confuso sul suo futuro lavorativo.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="C">
+                                <span>C) si è divertito a vedere tanti spettacoli nuovi.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="D">
+                                <span>D) non sapeva come affrontare le difficoltà economiche.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">6.</span> <strong>Durante gli studi a Roma Michele</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q6" value="A">
+                                <span>A) ha scoperto di avere un grande talento come regista.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="B">
+                                <span>B) ha conosciuto persone importanti che lo hanno aiutato.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="C">
+                                <span>C) ha completato la sua formazione professionale.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="D">
+                                <span>D) ha preso coscienza delle sue reali capacità di attore.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">7.</span> <strong>Attualmente Michele</strong></div>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q7" value="A">
+                                <span>A) progetta un viaggio di lavoro.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="B">
+                                <span>B) lavora attivamente con la sua compagnia teatrale.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="C">
+                                <span>C) cerca nuovi attori per spettacoli sperimentali.</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q7" value="D">
+                                <span>D) vuole allargare il suo ambito professionale.</span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <div id="test3" class="test-container">
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 15px; font-size: 1.4em;">Prova n. 3</h2>
+                <form id="testForm3">
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">1.</span> Tutti i giovedì Isoradio presenta un programma su luoghi di interesse culturale che si trovano in Italia.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q1" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q1" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">2.</span> Il pubblico può intervenire al programma di Isoradio con domande o commenti.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q2" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q2" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">3.</span> Piero e Rosalba Giadrossi hanno ricevuto l'incarico di realizzare il Parco Sculture del Chianti dal Comune di Castelnuovo Berardenga.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q3" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q3" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">4.</span> Attualmente al Parco Sculture del Chianti è possibile ammirare opere di artisti che provengono da tutto il mondo.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q4" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q4" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">5.</span> Per ammirare le opere esposte il visitatore deve seguire il percorso su una mappa.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q5" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q5" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">6.</span> Tutte le opere esposte al Parco Sculture del Chianti si integrano profondamente con il paesaggio circostante.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q6" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q6" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">7.</span> Gli espositori del Parco Sculture del Chianti hanno realizzato le loro opere con materiali di diverso tipo.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q7" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q7" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">8.</span> Molte sculture si trovano all'interno di una struttura originale che ha la forma di un labirinto.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q8" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q8" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">9.</span> La visione del parco è particolarmente bella e suggestiva al tramonto.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q9" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q9" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">10.</span> In alcuni mesi dell'anno il Parco Sculture del Chianti ospita spettacoli musicali e teatrali.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q10" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q10" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">11.</span> Periodicamente il Parco Sculture del Chianti organizza incontri con gli autori delle opere.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q11" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q11" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-text"><span class="question-number">12.</span> È possibile ammirare molte opere d'arte anche in un piccolo paese vicino al Parco Sculture del Chianti.</div>
+                        <div class="options" style="display: flex; gap: 30px; justify-content: center;">
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q12" value="V">
+                                <span>Vero</span>
+                            </label>
+                            <label class="option" style="flex: none; width: auto;">
+                                <input type="radio" name="q12" value="F">
+                                <span>Falso</span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <div id="results" class="results">
+                <div class="score" id="scoreDisplay"></div>
+                <div id="detailedResults" style="margin-top: 20px;"></div>
+                <p style="text-align: center; color: #7f8c8d;">Le risposte corrette sono evidenziate in verde, quelle sbagliate in rosso.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Exam configuration
+        const EXAM_DURATION = 35 * 60 + 2; // 35 minutes and 2 seconds
+        const TEST_TRANSITIONS = {
+            test2: 23 * 60 + 40, // 23:40 remaining
+            test3: 9 * 60 + 40   // 9:40 remaining
+        };
+        
+        // Test durations for progress calculation
+        const TEST_DURATIONS = {
+            test1: { start: 0, end: 11 * 60 + 22 }, // 11:22 elapsed when test2 starts
+            test2: { start: 11 * 60 + 22, end: 25 * 60 + 22 }, // 25:22 elapsed when test3 starts
+            test3: { start: 25 * 60 + 22, end: 35 * 60 + 2 }
+        };
+
+        // Sample correct answers for all three tests
+        const correctAnswers = {
+            test1: {
+                q1: 'B', q2: 'B', q3: 'A', q4: 'C', q5: 'D', q6: 'C', q7: 'B'
+            },
+            test2: {
+                q1: 'B', q2: 'B', q3: 'C', q4: 'B', q5: 'D', q6: 'D', q7: 'D'
+            },
+            test3: {
+                q1: 'V', q2: 'V', q3: 'F', q4: 'V', q5: 'F', q6: 'V',
+                q7: 'V', q8: 'V', q9: 'V', q10: 'V', q11: 'V', q12: 'V'
+            }
+        };
+
+        // Exam state
+        let examStarted = false;
+        let timeRemaining = EXAM_DURATION;
+        let currentTest = 1;
+        let timerInterval;
+        let examAudio;
+
+        // Initialize exam
+        document.addEventListener('DOMContentLoaded', function() {
+            examAudio = document.getElementById('examAudio');
+            
+            // Start exam button
+            document.getElementById('startExamBtn').addEventListener('click', startExam);
+            
+            // Add click handlers to options
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.option') && examStarted) {
+                    const option = e.target.closest('.option');
+                    const radio = option.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Remove selected class from siblings
+                    const siblings = option.parentNode.querySelectorAll('.option');
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    
+                    // Add selected class to this option
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        function startExam() {
+            examStarted = true;
+            document.getElementById('startExamBtn').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            
+            // Start audio without controls during exam
+            examAudio.controls = false;
+            examAudio.play();
+            
+            // Start timer
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Show first test
+            showTest(1);
+        }
+
+        function updateTimer() {
+            timeRemaining--;
+            
+            // Update display
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+            
+            // Update progress bar
+            const progress = ((EXAM_DURATION - timeRemaining) / EXAM_DURATION) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // Update test progress indicators
+            updateTestProgress();
+            
+            // Update timer color based on time remaining
+            const timerContainer = document.getElementById('timerContainer');
+            if (timeRemaining <= 300) { // 5 minutes
+                timerContainer.style.background = '#e74c3c';
+                timerContainer.style.animation = 'pulse 1s infinite';
+            } else if (timeRemaining <= 600) { // 10 minutes
+                timerContainer.style.background = '#f39c12';
+                timerContainer.style.animation = 'none';
+            }
+            
+            // Check for test transitions based on remaining time
+            // Test 2 starts when 23:40 remains
+            if (timeRemaining === (23 * 60 + 40) && currentTest === 1) {
+                showTest(2);
+            }
+            // Test 3 starts when 9:40 remains
+            else if (timeRemaining === (9 * 60 + 40) && currentTest === 2) {
+                showTest(3);
+            }
+            
+            // End exam when time is up
+            if (timeRemaining <= 0) {
+                endExam();
+            }
+        }
+        
+        function updateTestProgress() {
+            const elapsedTime = EXAM_DURATION - timeRemaining;
+            
+            // Update progress for each test
+            Object.keys(TEST_DURATIONS).forEach((testKey, index) => {
+                const testNum = index + 1;
+                const testData = TEST_DURATIONS[testKey];
+                const progressElement = document.getElementById(`test${testNum}Progress`);
+                const buttonElement = document.getElementById(`test${testNum}Btn`);
+                
+                let progressPercent = 0;
+                
+                if (elapsedTime >= testData.end) {
+                    // Test completed
+                    progressPercent = 100;
+                    buttonElement.classList.add('completed');
+                } else if (elapsedTime >= testData.start) {
+                    // Test in progress
+                    const testElapsed = elapsedTime - testData.start;
+                    const testDuration = testData.end - testData.start;
+                    progressPercent = (testElapsed / testDuration) * 100;
+                }
+                
+                progressElement.style.width = `${Math.min(progressPercent, 100)}%`;
+            });
+        }
+
+        function showTest(testNumber) {
+            currentTest = testNumber;
+            
+            // Hide all tests
+            document.querySelectorAll('.test-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Show selected test
+            document.getElementById(`test${testNumber}`).classList.add('active');
+            
+            // Update navigation buttons
+            document.querySelectorAll('.test-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Enable and activate current test button
+            const currentBtn = document.getElementById(`test${testNumber}Btn`);
+            currentBtn.disabled = false;
+            currentBtn.classList.add('active');
+            
+            // Enable previous test buttons for navigation
+            for (let i = 1; i < testNumber; i++) {
+                document.getElementById(`test${i}Btn`).disabled = false;
+            }
+            
+            // Update instructions based on current test
+            const instructionText = document.getElementById('instructionText');
+            if (testNumber === 1) {
+                instructionText.textContent = 'Ascolta i testi. Poi completa le frasi. Scegli una delle quattro proposte di completamento.';
+            } else if (testNumber === 2) {
+                instructionText.textContent = 'Ascolta il testo. Poi completa le frasi. Scegli una delle quattro proposte di completamento.';
+            } else if (testNumber === 3) {
+                instructionText.textContent = 'Ascolta il testo. Poi leggi le informazioni. Indica se le informazioni sono vere o false.';
+            }
+        }
+
+        function endExam() {
+            clearInterval(timerInterval);
+            examStarted = false;
+            
+            // Stop timer animation
+            const timerContainer = document.getElementById('timerContainer');
+            timerContainer.style.animation = 'none';
+            
+            // Stop audio and re-enable controls for review
+            examAudio.pause();
+            examAudio.controls = true;
+            
+            // Enable all test navigation buttons for review
+            document.querySelectorAll('.test-nav-btn').forEach(btn => {
+                if (btn.id !== 'resultsBtn') {
+                    btn.disabled = false;
+                    btn.classList.add('completed');
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show and enable results button
+            const resultsBtn = document.getElementById('resultsBtn');
+            resultsBtn.style.display = 'inline-block';
+            resultsBtn.disabled = false;
+            resultsBtn.classList.add('active');
+            
+            // Calculate total score
+            calculateFinalResults();
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide all test containers
+            document.querySelectorAll('.test-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Disable all interactions
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+        }
+
+        function calculateFinalResults() {
+            let totalScore = 0;
+            let totalQuestions = 0;
+            let detailedResults = '';
+            
+            // Check each test
+            ['test1', 'test2', 'test3'].forEach((testKey, index) => {
+                const testNumber = index + 1;
+                const form = document.getElementById(`testForm${testNumber}`);
+                const formData = new FormData(form);
+                const answers = correctAnswers[testKey];
+                const questionsInTest = testKey === 'test3' ? 12 : 7;
+                
+                let testScore = 0;
+                
+                // Check answers and highlight results
+                for (let i = 1; i <= questionsInTest; i++) {
+                    const questionName = `q${i}`;
+                    const userAnswer = formData.get(questionName);
+                    const correctAnswer = answers[questionName];
+                    
+                    // Find all options for this question in the current test container
+                    const testContainer = document.getElementById(testKey);
+                    const questionOptions = testContainer.querySelectorAll(`input[name="${questionName}"]`);
+                    
+                    questionOptions.forEach(option => {
+                        const optionContainer = option.closest('.option');
+                        
+                        if (option.value === correctAnswer) {
+                            optionContainer.classList.add('correct');
+                        } else if (option.checked && option.value !== correctAnswer) {
+                            optionContainer.classList.add('incorrect');
+                        }
+                    });
+                    
+                    if (userAnswer === correctAnswer) {
+                        testScore++;
+                    }
+                }
+                
+                totalScore += testScore;
+                totalQuestions += questionsInTest;
+                
+                detailedResults += `<div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                    <strong>Prova ${testNumber}:</strong> ${testScore}/${questionsInTest}
+                </div>`;
+            });
+            
+            // Display final results
+            const finalPercentage = Math.round((totalScore / totalQuestions) * 100);
+            let resultClass = '';
+            let resultMessage = '';
+            
+            if (finalPercentage >= 80) {
+                resultClass = 'color: #27ae60;';
+                resultMessage = '🎉 Eccellente!';
+            } else if (finalPercentage >= 70) {
+                resultClass = 'color: #f39c12;';
+                resultMessage = '👍 Buono!';
+            } else if (finalPercentage >= 60) {
+                resultClass = 'color: #e67e22;';
+                resultMessage = '📚 Sufficiente';
+            } else {
+                resultClass = 'color: #e74c3c;';
+                resultMessage = '📖 Da migliorare';
+            }
+            
+            document.getElementById('scoreDisplay').innerHTML = `
+                <div style="${resultClass} font-size: 1.8em; margin-bottom: 15px;">${resultMessage}</div>
+                <div style="font-size: 1.4em; margin-bottom: 10px;">Punteggio Totale: ${totalScore}/${totalQuestions}</div>
+            `;
+            
+            document.getElementById('detailedResults').innerHTML = detailedResults;
+        }
+
+        // Manual test navigation (works during exam and after completion)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.test-nav-btn') && !e.target.closest('.test-nav-btn').disabled) {
+                const btn = e.target.closest('.test-nav-btn');
+                
+                // Handle results button
+                if (btn.id === 'resultsBtn') {
+                    showResults();
+                    return;
+                }
+                
+                const testNumber = parseInt(btn.id.replace('test', '').replace('Btn', ''));
+                
+                // During exam: can only navigate to current or previous tests
+                // After exam: can navigate to any test
+                if (!examStarted || testNumber <= currentTest || timeRemaining <= 0) {
+                    showTest(testNumber);
+                    
+                    // Hide results when navigating to a test after exam completion
+                    if (timeRemaining <= 0) {
+                        document.getElementById('results').style.display = 'none';
+                        
+                        // Update button states
+                        document.querySelectorAll('.test-nav-btn').forEach(navBtn => {
+                            navBtn.classList.remove('active');
+                        });
+                        btn.classList.add('active');
+                    }
+                }
+            }
+        });
+        
+        function showResults() {
+            // Hide all test containers
+            document.querySelectorAll('.test-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            
+            // Update button states
+            document.querySelectorAll('.test-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('resultsBtn').classList.add('active');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98571179b22ddd47',t:'MTc1ODkzNDg3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
