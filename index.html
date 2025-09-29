@@ -34,14 +34,45 @@
     header .logo img { height:50px; margin-right:15px; }
     header nav { display:flex; flex-wrap:wrap; gap:15px; }
     header nav a { color:white; font-weight:bold; }
+
+    /* Hero */
     .hero { background:linear-gradient(to right,#004080,#0080ff); color:white; text-align:center; padding:20px; }
     .hero h2 { font-size:1.6em; margin-bottom:8px; }
     .hero p { font-size:1em; }
-    .about { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; padding:20px; background:#fff; gap:15px; }
-    .about-image, .about-text { flex:1 1 300px; padding:10px; }
-    .about-image img { max-width:100%; border-radius:10px; }
-    .about-text h3 { font-size:1.5em; margin-bottom:12px; }
-    .about-text p { font-size:1em; line-height:1.4; text-align:justify; }
+
+    /* About */
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #fff;
+      gap: 15px; /* espace par défaut sur PC */
+    }
+
+    .about-image, .about-text {
+      flex: 1 1 300px;
+      padding: 10px;
+    }
+
+    .about-image img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .about-text h3 {
+      font-size: 1.5em;
+      margin-bottom: 12px;
+    }
+
+    .about-text p {
+      font-size: 1em;
+      line-height:1.4;
+      text-align: justify;
+    }
+
+    /* Formulaire */
     .form-section, .signup-section { padding:20px; text-align:center; background:#e6f2ff; display:none; }
     .form-section.active, .signup-section.active { display:block; }
     form { max-width:400px; margin:0 auto; background:#fff; padding:15px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:left; }
@@ -50,87 +81,57 @@
     button { width:100%; padding:10px; background:#004080; color:white; border:none; border-radius:5px; cursor:pointer; font-size:1em; transition:0.3s; }
     button:hover { background:#0066cc; }
     .toggle-link { display:block; margin-top:8px; text-align:center; cursor:pointer; color:#004080; text-decoration:underline; font-size:0.95em; }
+
+    /* Footer */
     footer { background:#004080; color:white; padding:20px; text-align:center; font-size:0.9em; }
     footer a { color:white; }
+
     /* ----------- OPTIMISATION MOBILE ----------------- */
     @media (max-width: 768px) {
-      body {
-        padding-top: 130px;
-        font-size: 1em;
-      }
+      body { padding-top: 130px; font-size:1em; }
       header {
         flex-direction: column;
         align-items: flex-start;
         padding: 12px 8px;
         gap: 0;
-        height: auto;
+        height:auto;
       }
       header .logo {
         margin-bottom: 0;
         flex-direction: row;
-        width: 100%;
-        justify-content: flex-start;
+        width:100%;
+        justify-content:flex-start;
       }
-      header .logo img {
-        height: 40px;
-        margin-right: 10px;
-      }
-      header h1 {
-        font-size: 1.3em;
-      }
+      header .logo img { height: 40px; margin-right:10px; }
+      header h1 { font-size:1.3em; }
       header nav {
         width: 100%;
         margin-top: 8px;
         background: #003366;
         padding: 7px 0;
-        border-radius: 5px;
-        justify-content: center;
-        gap: 13px;
+        border-radius:5px;
+        justify-content:center;
+        gap:13px;
       }
-      .hero {
-        padding: 16px 8px;
-        font-size: 1.05em;
-      }
-      .hero h2 {
-        font-size: 1.25em;
-        margin-bottom: 10px;
-      }
+      .hero { padding:16px 8px; font-size:1.05em; }
+      .hero h2 { font-size:1.25em; margin-bottom:10px; }
+
+      /* About mobile */
       .about {
         flex-direction: column;
-        padding: 13px 8px;
-        gap: 10px;
+        padding: 10px 8px;
+        gap: 8px; /* espace réduit */
       }
-      .about-image img {
-        max-width: 100%;
-        border-radius: 10px;
-      }
-      .about-text {
-        text-align: center;
-        font-size: 1em;
-        padding: 0;
-      }
-      .form-section,
-      .signup-section {
-        padding: 14px 8px;
-      }
-      form {
-        max-width: 98vw;
-        padding: 10px;
-      }
-      button {
-        font-size: 1.1em;
-        padding: 12px;
-      }
-      .toggle-link {
-        font-size: 1em;
-      }
-      footer {
-        font-size: 0.95em;
-        padding: 14px 6px;
-      }
-      footer p, footer a {
-        font-size: 1em;
-      }
+      .about-text { padding:0; text-align:center; font-size:1em; }
+      .about-text h3 { font-size:1.3em; margin-bottom:8px; }
+      .about-text p { font-size:0.95em; line-height:1.35; }
+      
+      .form-section, .signup-section { padding:14px 8px; }
+      form { max-width:98vw; padding:10px; }
+      button { font-size:1.1em; padding:12px; }
+      .toggle-link { font-size:1em; }
+      footer { font-size:0.95em; padding:14px 6px; }
+      footer p, footer a { font-size:1em; }
     }
   </style>
 </head>
