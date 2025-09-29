@@ -6,6 +6,7 @@
   <title>CILS - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* RESET */
     html, body {
       height: 100%;
       margin: 0;
@@ -18,6 +19,8 @@
       background-color: #f5f5f5;
       color: #333;
     }
+
+    /* HEADER */
     header {
       background-color: #004080;
       color: white;
@@ -25,6 +28,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
     header .logo {
       display: flex;
@@ -34,12 +38,27 @@
       height: 40px;
       margin-right: 10px;
     }
-    header nav a {
+    nav {
+      position: relative;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 20px;
+      transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      overflow: hidden;
+    }
+    nav .nav-links a {
       color: white;
-      margin-left: 20px;
       text-decoration: none;
       font-weight: bold;
     }
+    .menu-toggle {
+      display: none;
+      font-size: 1.8em;
+      cursor: pointer;
+    }
+
+    /* MAIN */
     main {
       flex: 1;
       padding: 40px 20px;
@@ -94,6 +113,8 @@
     .box:hover img {
       transform: scale(1.2);
     }
+
+    /* FOOTER */
     footer {
       background-color: #004080;
       color: white;
@@ -106,8 +127,36 @@
       text-decoration: underline;
       margin-right: 15px;
     }
-    /* Responsive */
+
+    /* RESPONSIVE */
     @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+      header .logo {
+        margin-bottom: 10px;
+      }
+      nav .nav-links {
+        flex-direction: column;
+        width: 100%;
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
+      nav .nav-links a {
+        margin: 10px 0;
+      }
+      .menu-toggle {
+        display: block;
+        margin-top: 10px;
+      }
+      .nav-active {
+        max-height: 500px; /* ajuster selon le nombre de liens */
+        opacity: 1;
+        pointer-events: auto;
+      }
       .box-container {
         gap: 15px;
       }
@@ -123,22 +172,36 @@
         transform: scale(1.15);
       }
     }
+
+    /* Hover desktop */
+    @media (min-width: 769px) {
+      nav .nav-links a:hover {
+        text-decoration: underline;
+        color: #ffcc00;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../Media/logo.png" alt="Logo CILS">
       <h1>Esame Facile</h1>
     </div>
     <nav>
-      <a href="../index.html">Home</a>
-      <a href="#">Chi siamo</a>
-      <a href="../Menu/esami.html">Esami</a>
-      <a href="#">Contatti</a>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="#">Chi siamo</a>
+        <a href="../Menu/esami.html">Esami</a>
+        <a href="#">Contatti</a>
+      </div>
     </nav>
   </header>
 
+  <!-- MAIN -->
   <main>
     <h2>Sezioni dell’esame CILS</h2>
     <div class="box-container">
@@ -170,10 +233,22 @@
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     &copy; 2025 Esame Facile | 
     <a href="#">Mentions légales</a>
     <a href="#">Politique de confidentialité</a>
   </footer>
+
+  <!-- SCRIPT MENU HAMBURGER -->
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('nav-active');
+    });
+  </script>
+
 </body>
 </html>
