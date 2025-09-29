@@ -1,3 +1,6 @@
+Parfait ! Voici le **code complet de la page Ascolto** mis à jour avec le header et le footer identiques aux autres pages, et le logo mobile correctement dimensionné à 40 px :
+
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -6,19 +9,20 @@
   <title>Ascolto - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset et style global */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    body { 
       font-family: 'Roboto', Arial, sans-serif;
+      margin:0; 
+      padding:0;
+      background-color: #f0f4f8; 
+      color: #333;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      background-color: #f5f5f5;
-      color: #333;
     }
     a { text-decoration: none; color: inherit; }
 
-    /* HEADER FIXE */
+    /* HEADER */
     header {
       background-color: #004080;
       color: white;
@@ -41,6 +45,9 @@
       height: 50px;
       margin-right: 15px;
     }
+    header h1 {
+      font-size: 1.5em;
+    }
     header nav {
       display: flex;
       flex-wrap: wrap;
@@ -54,7 +61,7 @@
     /* MAIN */
     main {
       flex: 1;
-      padding: 120px 20px 40px; /* espace pour header fixe */
+      padding: 120px 20px 40px;
       text-align: center;
     }
     main h2 {
@@ -70,8 +77,9 @@
       background-color: #ffffff;
       border-left: 6px solid #009688;
       border-radius: 10px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
       padding: 25px 30px;
+      font-family: 'Roboto', Arial, sans-serif;
       color: #123241;
       line-height: 1.65;
     }
@@ -94,16 +102,14 @@
       margin: 12px 0;
     }
 
-    /* Grille des tests */
+    /* Test grid */
     .test-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 25px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 0 auto 40px auto;
     }
-
-    /* Boutons */
     .test-button {
       display: flex;
       align-items: center;
@@ -113,6 +119,7 @@
       background: linear-gradient(135deg, #009688, #4db6ac);
       color: white;
       text-align: center;
+      text-decoration: none;
       border-radius: 30px;
       font-weight: bold;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
@@ -121,21 +128,6 @@
       transform: translateY(-4px);
       box-shadow: 0 6px 15px rgba(0,0,0,0.25);
       background: linear-gradient(135deg, #00796b, #26a69a);
-    }
-
-    /* Footer */
-    footer {
-      background-color: #004080;
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: auto;
-    }
-    footer a {
-      color: white;
-      text-decoration: underline;
-      margin-right: 15px;
     }
 
     /* Back button */
@@ -156,8 +148,26 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    /* Responsive */
+    /* FOOTER */
+    footer {
+      background-color: #004080;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: auto;
+    }
+    footer a {
+      color: white;
+      text-decoration: underline;
+      margin-right: 15px;
+    }
+
+    /* ----------- RESPONSIVE ----------------- */
     @media (max-width: 768px) {
+      body {
+        font-size: 1em;
+      }
       header {
         flex-direction: column;
         align-items: flex-start;
@@ -172,7 +182,11 @@
         justify-content: flex-start;
       }
       header .logo img {
-        height: 35px !important; /* logo mobile identique aux autres pages */
+        height: 40px;
+        margin-right: 10px;
+      }
+      header h1 {
+        font-size: 1.3em;
       }
       header nav {
         width: 100%;
@@ -183,9 +197,6 @@
         justify-content: center;
         gap: 13px;
       }
-    }
-
-    @media (max-width: 600px) {
       .regole {
         padding: 18px;
         margin: 20px 12px 28px 12px;
@@ -206,6 +217,7 @@
       }
       .test-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
       }
     }
   </style>
@@ -286,3 +298,9 @@
 
 </body>
 </html>
+```
+
+✅ Points corrigés :
+
+* Logo mobile = 40 px, identique aux autres pages.
+* Bande ble
