@@ -6,8 +6,8 @@
   <title>Ascolto - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
-
+    /* Reset et style global */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Roboto', Arial, sans-serif;
       display: flex;
@@ -16,10 +16,9 @@
       background-color: #f0f4f8;
       color: #333;
     }
-
     a { text-decoration: none; color: inherit; }
 
-    /* ---------- HEADER ---------- */
+    /* HEADER FIXE */
     header {
       background-color: #004080;
       color: white;
@@ -39,28 +38,23 @@
       align-items: center;
     }
     header .logo img {
-      height: 40px; /* logo PC */
-      margin-right: 12px;
+      height: 50px; /* taille desktop */
+      margin-right: 15px;
     }
     header nav {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
-      background: none; /* pas de bande bleue sur PC */
-      padding: 0;
-      border-radius: 0;
     }
     header nav a {
       color: white;
       font-weight: bold;
-      transition: color 0.2s;
     }
-    header nav a:hover { color: #7cc242; }
 
-    /* ---------- MAIN ---------- */
+    /* MAIN */
     main {
       flex: 1;
-      padding: 120px 20px 40px; /* espace pour le header fixe */
+      padding: 120px 20px 40px;
       text-align: center;
     }
     main h2 {
@@ -69,14 +63,43 @@
       color: #004080;
     }
 
-    /* Bloc Regole Generali */
+    /* Grille des tests */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Boutons */
+    .test-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 15px;
+      font-size: 1.2em;
+      background: linear-gradient(135deg, #009688, #4db6ac);
+      color: white;
+      text-align: center;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    }
+    .test-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+      background: linear-gradient(135deg, #00796b, #26a69a);
+    }
+
+    /* Bloc Regole Generali - Ascolto */
     .regole {
       max-width: 1000px;
       margin: 30px auto 40px auto;
       background-color: #ffffff;
       border-left: 6px solid #009688;
       border-radius: 10px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
       padding: 25px 30px;
       font-family: 'Roboto', Arial, sans-serif;
       color: #123241;
@@ -91,43 +114,37 @@
       color: #004080;
       gap: 10px;
     }
-    .regole h2 img.icon-regole { width:28px; height:28px; }
-    .regole p { text-align: justify; font-size: 1em; margin: 12px 0; }
-
-    /* ---------- TEST BUTTONS ---------- */
-    .test-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      max-width: 1200px;
-      margin: 0 auto 40px auto;
+    .regole h2 img.icon-regole {
+      width: 28px;
+      height: 28px;
     }
-    .test-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px 15px;
-      font-size: 1.2em;
-      background: linear-gradient(135deg, #009688, #4db6ac);
+    .regole p {
+      text-align: justify;
+      font-size: 1em;
+      margin: 12px 0;
+    }
+
+    /* FOOTER collé en bas */
+    footer {
+      background-color: #004080;
       color: white;
+      padding: 15px 20px;
       text-align: center;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: bold;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+      font-size: 0.9em;
+      margin-top: auto;
     }
-    .test-button:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-      background: linear-gradient(135deg, #00796b, #26a69a);
+    footer a {
+      color: white;
+      text-decoration: underline;
+      margin-right: 15px;
     }
 
-    /* ---------- BACK BUTTON ---------- */
+    /* BACK BUTTON */
     #backBtn {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      background: rgba(44,62,80,0.9);
+      background: rgba(44, 62, 80, 0.9);
       color: white;
       border: 2px solid rgba(255,255,255,0.3);
       padding: 12px 20px;
@@ -140,44 +157,62 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    /* ---------- FOOTER ---------- */
-    footer {
-      background-color: #004080;
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: auto;
-    }
-    footer a { color: white; text-decoration: underline; margin-right: 15px; }
-
-    /* ---------- RESPONSIVE ---------- */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-      header { flex-direction: column; gap: 10px; }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 8px;
+        gap: 5px;
+        height: auto;
+      }
+      header .logo {
+        margin-bottom: 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      header .logo img {
+        height: 35px !important; /* taille mobile identique aux autres pages */
+      }
       header nav {
-        background-color: #003366; /* bande bleue uniquement sur mobile */
+        width: 100%;
+        margin-top: 8px;
+        background: #003366; /* bande bleue sous le menu */
         padding: 7px 0;
         border-radius: 5px;
-        width: 100%;
         justify-content: center;
+        gap: 13px;
       }
-      .regole { padding: 18px; margin: 20px 12px 28px 12px; }
-      .regole h2 { font-size: 1.3em; }
-      .regole h2 img.icon-regole { width:24px; height:24px; }
-      .regole p { font-size: 0.95em; }
-      .test-grid { grid-template-columns: 1fr; gap: 15px; }
-      .test-button { padding: 20px; font-size: 1.1em; }
-     header .logo img { height: 35px; } /* logo mobile = 35px */
+      .test-grid {
+        grid-template-columns: 1fr; /* empile les boutons verticalement */
+        gap: 15px;
+      }
+      .test-button {
+        padding: 20px;
+        font-size: 1.1em;
+      }
+      .regole {
+        padding: 18px;
+        margin: 20px 12px 28px 12px;
+      }
+      .regole h2 {
+        font-size: 1.3em;
+      }
+      .regole h2 img.icon-regole {
+        width: 24px;
+        height: 24px;
+      }
+      .regole p {
+        font-size: 0.95em;
+      }
     }
-    @media (max-width: 768px) {
-  header .logo img {
-    height: 35px !important; /* forcer la taille du logo sur mobile */
-  }
-}
+
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../../Media/logo.png" alt="Logo Esame Facile">
@@ -191,6 +226,7 @@
     </nav>
   </header>
 
+  <!-- MAIN -->
   <main>
     <!-- Bloc Regole Generali -->
     <section class="regole">
@@ -240,8 +276,10 @@
 
     <!-- Back Button -->
     <button id="backBtn" onclick="window.location.href='../cils.html'">← Indietro</button>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
     &copy; 2025 Esame Facile | 
     <a href="#">Mentions légales</a>
