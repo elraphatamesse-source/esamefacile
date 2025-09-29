@@ -6,11 +6,11 @@
   <title>Esame Facile - Selezione Esame</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin:0; padding:0; }
-    body { font-family: 'Roboto', Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; background:#f5f5f5; color:#333; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; display: flex; flex-direction: column; min-height: 100vh; }
     a { text-decoration: none; color: inherit; }
 
-    /* Header fixe */
+    /* HEADER FIXE */
     header {
       background-color: #004080;
       color: white;
@@ -25,31 +25,22 @@
       width: 100%;
       z-index: 1000;
     }
-    header .logo { display: flex; align-items: center; margin-bottom:10px; }
+    header .logo { display: flex; align-items: center; margin-bottom: 10px; }
     header .logo img { height: 50px; margin-right: 15px; }
-    header nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      background-color: #003366; /* bande sous menu */
-      padding: 7px 0;
-      border-radius: 5px;
-      width: 100%;
-      justify-content: center;
-    }
+    header nav { display: flex; flex-wrap: wrap; gap: 15px; }
     header nav a { color: white; font-weight: bold; }
 
-    /* Main content */
-    main { flex:1; padding: 120px 20px 40px; text-align: center; }
+    /* MAIN */
+    main { flex: 1; padding: 120px 20px 40px; text-align: center; }
     main h2 { font-size: 1.8em; margin-bottom: 10px; }
     main p { font-size: 1.2em; margin-bottom: 30px; }
 
     /* Exam boxes */
     .exam-grid {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      justify-items: center;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -57,10 +48,10 @@
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      width: 250px;
+      width: 100%;
+      max-width: 250px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: center;
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
@@ -71,12 +62,7 @@
       transform: translateY(-5px);
       box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
-    .exam-box img {
-      width: auto;
-      height: 80px;
-      margin-bottom: 10px;
-      object-fit: contain; /* pour ne pas déformer les images */
-    }
+    .exam-box img { width: auto; height: 80px; margin-bottom: 10px; object-fit: contain; }
     .exam-box span.name { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 5px; }
     .exam-box span.desc { font-size: 0.95em; color: #555; }
 
@@ -94,7 +80,7 @@
     }
     #logoutBtn:hover { background-color: #0066cc; }
 
-    /* Footer collé en bas */
+    /* FOOTER collé en bas */
     footer {
       background-color: #004080;
       color: white;
@@ -103,22 +89,30 @@
       font-size: 0.9em;
       margin-top: auto;
     }
-    footer a { color: white; text-decoration: underline; }
+    footer a { color: white; text-decoration: underline; margin-right: 15px; }
 
-    /* Responsive */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
       header { flex-direction: column; align-items: flex-start; padding: 12px 8px; gap:5px; }
-      header .logo img { height: 40px; margin-right: 10px; } /* logo mobile */
-      header nav { padding: 7px 0; justify-content: center; }
-      .exam-grid { flex-direction: column; align-items: center; gap:15px; }
-      .exam-box { width: 90%; max-width: 350px; }
-      .exam-box img { height: 60px; width: auto; }
+      header .logo img { height: 40px; margin-right: 10px; }
+      header nav {
+        width: 100%;
+        margin-top: 8px;
+        background-color: #003366;
+        padding: 7px 0;
+        border-radius: 5px;
+        justify-content: center;
+        gap: 13px;
+      }
+      .exam-grid { grid-template-columns: 1fr; gap: 15px; }
+      .exam-box { max-width: 90%; }
+      .exam-box img { height: 60px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../Media/logo.png" alt="Logo Esame Facile">
@@ -132,7 +126,7 @@
     </nav>
   </header>
 
-  <!-- Main content -->
+  <!-- MAIN -->
   <main>
     <h2 id="welcome">Benvenuto!</h2>
     <p>Seleziona l’esame che vuoi preparare:</p>
@@ -156,24 +150,22 @@
       </a>
     </div>
 
-    <!-- Logout button -->
     <button id="logoutBtn">Esci</button>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Esame Facile - Tutti i diritti riservati</p>
     <p><a href="#">Note legali</a> | <a href="#">Privacy</a></p>
   </footer>
 
-  <!-- Script -->
+  <!-- SCRIPT -->
   <script>
     if(sessionStorage.getItem('loggedIn') !== 'true') {
       window.location.href = '../index.html';
     }
     const username = sessionStorage.getItem('username') || 'Benvenuto';
     document.getElementById('welcome').textContent = `Benvenuto, ${username}!`;
-
     document.getElementById('logoutBtn').addEventListener('click', function(){
       sessionStorage.clear();
       window.location.href = '../index.html';
