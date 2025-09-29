@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Le header de cette page n'est beau sur mobile : <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -6,94 +6,40 @@
   <title>CILS - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* RESET */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     html, body {
       height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
       font-family: 'Roboto', Arial, sans-serif;
       background-color: #f5f5f5;
       color: #333;
     }
-
-    /* HEADER */
     header {
       background-color: #004080;
       color: white;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
-      position: relative;
-      z-index: 10;
     }
-    .logo {
+    header .logo {
       display: flex;
       align-items: center;
     }
-    .logo img {
+    header .logo img {
       height: 40px;
       margin-right: 10px;
     }
-    .menu-toggle {
-      display: none;
-      font-size: 1.8em;
-      cursor: pointer;
-    }
-    nav {
-      display: flex;
-      gap: 20px;
-    }
-    nav a {
+    header nav a {
       color: white;
+      margin-left: 20px;
       text-decoration: none;
       font-weight: bold;
     }
-    nav a:hover {
-      color: #ffcc00;
-    }
-
-    /* MOBILE MENU */
-    @media (max-width: 768px) {
-      .menu-toggle {
-        display: block;
-      }
-      nav {
-        position: fixed;
-        top: 0;
-        right: -250px;
-        height: 100%;
-        width: 250px;
-        background-color: rgba(0, 64, 128, 0.95);
-        flex-direction: column;
-        padding-top: 60px;
-        transition: right 0.3s ease;
-        gap: 20px;
-      }
-      nav.active {
-        right: 0;
-      }
-      nav a {
-        margin: 20px;
-        font-size: 1.1em;
-      }
-      /* Overlay */
-      body.menu-open::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5);
-        z-index: 5;
-      }
-    }
-
-    /* MAIN */
     main {
       flex: 1;
       padding: 40px 20px;
@@ -148,8 +94,6 @@
     .box:hover img {
       transform: scale(1.2);
     }
-
-    /* FOOTER */
     footer {
       background-color: #004080;
       color: white;
@@ -162,8 +106,7 @@
       text-decoration: underline;
       margin-right: 15px;
     }
-
-    /* RESPONSIVE BOXES */
+    /* Responsive */
     @media (max-width: 768px) {
       .box-container {
         gap: 15px;
@@ -183,15 +126,12 @@
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../Media/logo.png" alt="Logo CILS">
       <h1>Esame Facile</h1>
     </div>
-    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-    <nav id="nav-links">
+    <nav>
       <a href="../index.html">Home</a>
       <a href="#">Chi siamo</a>
       <a href="../Menu/esami.html">Esami</a>
@@ -199,7 +139,6 @@
     </nav>
   </header>
 
-  <!-- MAIN -->
   <main>
     <h2>Sezioni dell’esame CILS</h2>
     <div class="box-container">
@@ -231,31 +170,10 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     &copy; 2025 Esame Facile | 
     <a href="#">Mentions légales</a>
     <a href="#">Politique de confidentialité</a>
   </footer>
-
-  <!-- SCRIPT MENU HAMBURGER -->
-  <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
-    });
-
-    // Fermer le menu si on clique sur l'overlay
-    document.body.addEventListener('click', e => {
-      if (document.body.classList.contains('menu-open') && !navLinks.contains(e.target) && e.target !== menuToggle) {
-        navLinks.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      }
-    });
-  </script>
-
 </body>
 </html>
