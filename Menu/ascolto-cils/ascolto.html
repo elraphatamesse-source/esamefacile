@@ -39,7 +39,7 @@
       align-items: center;
     }
     header .logo img {
-      height: 40px; /* taille identique à tes autres pages */
+      height: 40px; /* logo PC */
       margin-right: 12px;
     }
     header nav {
@@ -155,7 +155,7 @@
     @media (max-width: 768px) {
       header { flex-direction: column; gap: 10px; }
       header nav {
-        background-color: #003366;
+        background-color: #003366; /* bande bleue uniquement sur mobile */
         padding: 7px 0;
         border-radius: 5px;
         width: 100%;
@@ -167,7 +167,7 @@
       .regole p { font-size: 0.95em; }
       .test-grid { grid-template-columns: 1fr; gap: 15px; }
       .test-button { padding: 20px; font-size: 1.1em; }
-      header .logo img { height: 40px; } /* logo identique sur mobile */
+      header .logo img { height: 36px; } /* logo mobile = 36px */
     }
   </style>
 </head>
