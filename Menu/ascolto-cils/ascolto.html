@@ -13,7 +13,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      background-color: #f0f4f8;
+      background-color: #f5f5f5;
       color: #333;
     }
     a { text-decoration: none; color: inherit; }
@@ -38,7 +38,7 @@
       align-items: center;
     }
     header .logo img {
-      height: 50px; /* taille desktop */
+      height: 50px;
       margin-right: 15px;
     }
     header nav {
@@ -54,13 +54,44 @@
     /* MAIN */
     main {
       flex: 1;
-      padding: 120px 20px 40px;
+      padding: 120px 20px 40px; /* espace pour header fixe */
       text-align: center;
     }
     main h2 {
       margin-bottom: 35px;
       font-size: 2em;
       color: #004080;
+    }
+
+    /* Bloc Regole Generali */
+    .regole {
+      max-width: 1000px;
+      margin: 30px auto 40px auto;
+      background-color: #ffffff;
+      border-left: 6px solid #009688;
+      border-radius: 10px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      padding: 25px 30px;
+      color: #123241;
+      line-height: 1.65;
+    }
+    .regole h2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      color: #004080;
+      gap: 10px;
+    }
+    .regole h2 img.icon-regole {
+      width: 28px;
+      height: 28px;
+    }
+    .regole p {
+      text-align: justify;
+      font-size: 1em;
+      margin: 12px 0;
     }
 
     /* Grille des tests */
@@ -92,39 +123,7 @@
       background: linear-gradient(135deg, #00796b, #26a69a);
     }
 
-    /* Bloc Regole Generali - Ascolto */
-    .regole {
-      max-width: 1000px;
-      margin: 30px auto 40px auto;
-      background-color: #ffffff;
-      border-left: 6px solid #009688;
-      border-radius: 10px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-      padding: 25px 30px;
-      font-family: 'Roboto', Arial, sans-serif;
-      color: #123241;
-      line-height: 1.65;
-    }
-    .regole h2 {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6em;
-      margin-bottom: 20px;
-      color: #004080;
-      gap: 10px;
-    }
-    .regole h2 img.icon-regole {
-      width: 28px;
-      height: 28px;
-    }
-    .regole p {
-      text-align: justify;
-      font-size: 1em;
-      margin: 12px 0;
-    }
-
-    /* FOOTER collé en bas */
+    /* Footer */
     footer {
       background-color: #004080;
       color: white;
@@ -139,7 +138,7 @@
       margin-right: 15px;
     }
 
-    /* BACK BUTTON */
+    /* Back button */
     #backBtn {
       position: fixed;
       bottom: 20px;
@@ -157,7 +156,7 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    /* RESPONSIVE */
+    /* Responsive */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -173,25 +172,20 @@
         justify-content: flex-start;
       }
       header .logo img {
-        height: 30px !important; /* taille mobile identique aux autres pages */
+        height: 35px !important; /* logo mobile identique aux autres pages */
       }
       header nav {
         width: 100%;
         margin-top: 8px;
-        background: #003366; /* bande bleue sous le menu */
+        background: #003366;
         padding: 7px 0;
         border-radius: 5px;
         justify-content: center;
         gap: 13px;
       }
-      .test-grid {
-        grid-template-columns: 1fr; /* empile les boutons verticalement */
-        gap: 15px;
-      }
-      .test-button {
-        padding: 20px;
-        font-size: 1.1em;
-      }
+    }
+
+    @media (max-width: 600px) {
       .regole {
         padding: 18px;
         margin: 20px 12px 28px 12px;
@@ -206,13 +200,18 @@
       .regole p {
         font-size: 0.95em;
       }
+      .test-button {
+        padding: 20px;
+        font-size: 1.1em;
+      }
+      .test-grid {
+        grid-template-columns: 1fr;
+      }
     }
-
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../../Media/logo.png" alt="Logo Esame Facile">
@@ -226,7 +225,6 @@
     </nav>
   </header>
 
-  <!-- MAIN -->
   <main>
     <!-- Bloc Regole Generali -->
     <section class="regole">
@@ -275,11 +273,11 @@
     </div>
 
     <!-- Back Button -->
-    <button id="backBtn" onclick="window.location.href='../cils.html'">← Indietro</button>
-
+    <button id="backBtn" onclick="window.location.href='../cils.html'">
+      ← Indietro
+    </button>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     &copy; 2025 Esame Facile | 
     <a href="#">Mentions légales</a>
