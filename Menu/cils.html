@@ -6,40 +6,52 @@
   <title>CILS - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    * { box-sizing: border-box; }
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      margin:0; 
+      padding:0; 
+      background:#f5f5f5; 
+      color:#333;
+      padding-top:90px; /* espace pour le header fixe */
     }
-    body {
-      display: flex;
-      flex-direction: column;
-      font-family: 'Roboto', Arial, sans-serif;
-      background-color: #f5f5f5;
-      color: #333;
+    a { text-decoration: none; }
+
+    /* HEADER */
+    header { 
+      background:#004080; 
+      color:white; 
+      padding:15px 30px; 
+      display:flex; 
+      flex-wrap:wrap; 
+      justify-content:space-between; 
+      align-items:center; 
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
     }
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    header .logo { 
+      display:flex; 
+      align-items:center; 
+      margin-bottom:10px; 
     }
-    header .logo {
-      display: flex;
-      align-items: center;
+    header .logo img { 
+      height:50px; 
+      margin-right:15px; 
     }
-    header .logo img {
-      height: 40px;
-      margin-right: 10px;
+    header nav { 
+      display:flex; 
+      flex-wrap:wrap; 
+      gap:15px; 
     }
-    header nav a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: bold;
+    header nav a { 
+      color:white; 
+      font-weight:bold; 
     }
+
+    /* MAIN CONTENT */
     main {
       flex: 1;
       padding: 40px 20px;
@@ -94,6 +106,8 @@
     .box:hover img {
       transform: scale(1.2);
     }
+
+    /* FOOTER */
     footer {
       background-color: #004080;
       color: white;
@@ -106,8 +120,42 @@
       text-decoration: underline;
       margin-right: 15px;
     }
-    /* Responsive */
+
+    /* ----------- RESPONSIVE ----------------- */
     @media (max-width: 768px) {
+      body {
+        padding-top: 130px;
+        font-size: 1em;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 8px;
+        gap: 0;
+        height: auto;
+      }
+      header .logo {
+        margin-bottom: 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      header .logo img {
+        height: 40px;
+        margin-right: 10px;
+      }
+      header h1 {
+        font-size: 1.3em;
+      }
+      header nav {
+        width: 100%;
+        margin-top: 8px;
+        background: #003366;
+        padding: 7px 0;
+        border-radius: 5px;
+        justify-content: center;
+        gap: 13px;
+      }
       .box-container {
         gap: 15px;
       }
@@ -119,13 +167,11 @@
         width: 60px;
         height: 60px;
       }
-      .box:hover img {
-        transform: scale(1.15);
-      }
     }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="../Media/logo.png" alt="Logo CILS">
@@ -139,6 +185,7 @@
     </nav>
   </header>
 
+  <!-- MAIN -->
   <main>
     <h2>Sezioni dell’esame CILS</h2>
     <div class="box-container">
@@ -170,6 +217,7 @@
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     &copy; 2025 Esame Facile | 
     <a href="#">Mentions légales</a>
