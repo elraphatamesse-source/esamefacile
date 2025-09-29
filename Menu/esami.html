@@ -6,17 +6,8 @@
   <title>Esame Facile - Selezione Esame</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-    body { 
-      font-family: 'Roboto', Arial, sans-serif; 
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      background:#f5f5f5; 
-      color:#333;
-      padding-top: 90px; /* espace pour header fixe */
-    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family: 'Roboto', Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; background:#f5f5f5; color:#333; }
     a { text-decoration: none; color: inherit; }
 
     /* Header fixe */
@@ -35,25 +26,21 @@
       z-index: 1000;
     }
     header .logo { display: flex; align-items: center; margin-bottom:10px; }
-    header .logo img { height:50px; margin-right:15px; }
-    header nav { display: flex; flex-wrap: wrap; gap: 15px; }
-    header nav a { color: white; font-weight: bold; }
-
-    /* bande bleu foncé sous menu */
-    header nav { 
-      background-color: #003366; 
-      padding: 7px 0; 
-      border-radius: 5px; 
+    header .logo img { height: 50px; margin-right: 15px; }
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      background-color: #003366; /* bande sous menu */
+      padding: 7px 0;
+      border-radius: 5px;
       width: 100%;
       justify-content: center;
     }
+    header nav a { color: white; font-weight: bold; }
 
     /* Main content */
-    main { 
-      flex: 1 0 auto;
-      padding: 20px;
-      text-align: center; 
-    }
+    main { flex:1; padding: 120px 20px 40px; text-align: center; }
     main h2 { font-size: 1.8em; margin-bottom: 10px; }
     main p { font-size: 1.2em; margin-bottom: 30px; }
 
@@ -61,8 +48,10 @@
     .exam-grid {
       display: flex;
       justify-content: center;
+      gap: 30px;
       flex-wrap: wrap;
-      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .exam-box {
       background: #fff;
@@ -82,10 +71,11 @@
       transform: translateY(-5px);
       box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
-    .exam-box img { 
-      max-width: 80px; 
-      height: auto; /* garder proportions originales */
-      margin-bottom: 10px; 
+    .exam-box img {
+      width: auto;
+      height: 80px;
+      margin-bottom: 10px;
+      object-fit: contain; /* pour ne pas déformer les images */
     }
     .exam-box span.name { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 5px; }
     .exam-box span.desc { font-size: 0.95em; color: #555; }
@@ -111,21 +101,18 @@
       padding: 20px;
       text-align: center;
       font-size: 0.9em;
-      flex-shrink: 0;
+      margin-top: auto;
     }
-    footer a { color: white; }
+    footer a { color: white; text-decoration: underline; }
 
     /* Responsive */
     @media (max-width: 768px) {
       header { flex-direction: column; align-items: flex-start; padding: 12px 8px; gap:5px; }
-      header .logo img { height: 40px; margin-right:10px; }
+      header .logo img { height: 40px; margin-right: 10px; } /* logo mobile */
       header nav { padding: 7px 0; justify-content: center; }
-      .exam-grid { 
-        flex-direction: column; /* empile les boxes */
-        align-items: center;
-      }
+      .exam-grid { flex-direction: column; align-items: center; gap:15px; }
       .exam-box { width: 90%; max-width: 350px; }
-      .exam-box img { width: auto; height: 60px; } /* image proportionnelle */
+      .exam-box img { height: 60px; width: auto; }
     }
   </style>
 </head>
@@ -181,16 +168,12 @@
 
   <!-- Script -->
   <script>
-    // Vérifie si l'utilisateur est connecté
     if(sessionStorage.getItem('loggedIn') !== 'true') {
       window.location.href = '../index.html';
     }
-
-    // Affiche le prénom correctement
     const username = sessionStorage.getItem('username') || 'Benvenuto';
     document.getElementById('welcome').textContent = `Benvenuto, ${username}!`;
 
-    // Déconnexion
     document.getElementById('logoutBtn').addEventListener('click', function(){
       sessionStorage.clear();
       window.location.href = '../index.html';
