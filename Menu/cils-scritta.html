@@ -1940,7 +1940,492 @@
         }
 
         function startWriting() {
-            alert('Funzionalità di scrittura guidata in sviluppo! Presto potrai scrivere direttamente qui con contatore parole e suggerimenti in tempo reale.');
+            const modal = document.getElementById('exerciseModal');
+            const content = document.getElementById('exerciseContent');
+            
+            // Get current exercise info
+            const exerciseTitle = content.querySelector('h3').textContent;
+            const exerciseType = content.querySelector('div[style*="background: #e8f4fd"]').textContent.trim();
+            const consegna = content.querySelector('.consegna').textContent;
+            
+            const isProva1 = exerciseType.includes('Prova 1');
+            const wordLimit = isProva1 ? '120-140' : '50-80';
+            const maxWords = isProva1 ? 140 : 80;
+            const minWords = isProva1 ? 120 : 50;
+            
+            content.innerHTML = `
+                <div class="exercise-content">
+                    <h3>✍️ ${exerciseTitle}</h3>
+                    <div style="background: #e8f4fd; padding: 10px; border-radius: 5px; margin: 15px 0; text-align: center; font-weight: bold; color: #2c3e50;">
+                        ${exerciseType}
+                    </div>
+                    
+                    <div class="consegna" style="margin-bottom: 20px;">
+                        <strong>Traccia:</strong> ${consegna}
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <strong>Scrivi il tuo testo:</strong>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div id="liveWordCounter" style="background: #3498db; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.9em; font-weight: bold;">
+                                    Parole: 0/${wordLimit}
+                                </div>
+                                <button onclick="clearText()" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 12px; font-size: 0.8em; cursor: pointer;">
+                                    🗑️ Cancella
+                                </button>
+                            </div>
+                        </div>
+                        
+                        ${isProva1 ? `
+                        <textarea id="writingArea" 
+                            placeholder="Inizia a scrivere qui il tuo testo narrativo...&#10;&#10;Ricorda la struttura:&#10;1. Situazione iniziale (quando, dove, perché)&#10;2. Azioni intraprese (cosa hai fatto)&#10;3. Riflessione personale (sei soddisfatto/a?)" 
+                            style="width: 100%; height: 250px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1em; line-height: 1.6; resize: vertical;"
+                            oninput="updateLiveWordCount(${minWords}, ${maxWords})"></textarea>
+                        ` : `
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Oggetto (per email):</label>
+                            <input type="text" id="emailSubjectField" placeholder="Es: Richiesta spostamento appuntamento" 
+                                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <textarea id="writingArea" 
+                            placeholder="Gentile Dottore/Professoressa [Cognome],&#10;&#10;Le scrivo per...&#10;&#10;[Spiegazione del problema]&#10;&#10;[Richiesta specifica]&#10;&#10;La ringrazio per la comprensione.&#10;&#10;Cordiali saluti,&#10;[Il tuo nome]" 
+                            style="width: 100%; height: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1em; line-height: 1.6; resize: vertical;"
+                            oninput="updateLiveWordCount(${minWords}, ${maxWords})"></textarea>
+                        `}
+                        
+                        <div id="writingTips" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin: 15px 0; border-radius: 5px;">
+                            <strong>💡 Suggerimenti in tempo reale:</strong>
+                            <div id="tipsContent" style="margin-top: 8px; font-size: 0.9em; line-height: 1.5;">
+                                Inizia a scrivere per ricevere suggerimenti personalizzati...
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                            <button onclick="analyzeWriting()" style="background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                📊 Analizza Testo
+                            </button>
+                            <button onclick="showExampleSolution()" style="background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                💡 Vedi Esempio
+                            </button>
+                            <button onclick="closeModal()" style="background: #95a5a6; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                ← Indietro
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearText() {
+            const textarea = document.getElementById('writingArea');
+            const emailSubject = document.getElementById('emailSubjectField');
+            if (textarea) textarea.value = '';
+            if (emailSubject) emailSubject.value = '';
+            updateLiveWordCount(50, 140);
+        }
+
+        function updateLiveWordCount(minWords, maxWords) {
+            const textarea = document.getElementById('writingArea');
+            const counter = document.getElementById('liveWordCounter');
+            const tipsContent = document.getElementById('tipsContent');
+            
+            if (!textarea || !counter) return;
+            
+            const text = textarea.value.trim();
+            const currentWords = text === '' ? 0 : text.split(/\s+/).length;
+            
+            // Update counter color and text
+            let color = '#3498db';
+            let status = '';
+            
+            if (currentWords < minWords) {
+                color = '#e74c3c';
+                status = ` (${minWords - currentWords} parole mancanti)`;
+            } else if (currentWords > maxWords) {
+                color = '#f39c12';
+                status = ` (${currentWords - maxWords} parole in eccesso)`;
+            } else {
+                color = '#27ae60';
+                status = ' ✓';
+            }
+            
+            counter.style.backgroundColor = color;
+            counter.textContent = `Parole: ${currentWords}/${minWords}-${maxWords}${status}`;
+            
+            // Generate dynamic tips
+            if (tipsContent) {
+                let tips = [];
+                
+                if (currentWords === 0) {
+                    tips.push("Inizia con una frase che introduce la situazione");
+                } else if (currentWords < 20) {
+                    tips.push("Continua descrivendo il contesto (quando, dove, perché)");
+                } else if (currentWords < 60 && maxWords > 80) {
+                    tips.push("Sviluppa le azioni che hai intrapreso");
+                } else if (currentWords < 100 && maxWords > 80) {
+                    tips.push("Aggiungi la tua riflessione personale");
+                } else if (currentWords >= minWords && currentWords <= maxWords) {
+                    tips.push("Perfetto! Rileggi per controllare grammatica e coerenza");
+                }
+                
+                // Check for specific elements
+                const lowerText = text.toLowerCase();
+                if (maxWords > 80) { // Prova 1
+                    if (!lowerText.includes('ho ') && !lowerText.includes('sono ')) {
+                        tips.push("Usa la prima persona: 'ho fatto', 'sono andato/a'");
+                    }
+                    if (!lowerText.includes('poi') && !lowerText.includes('dopo') && !lowerText.includes('alla fine')) {
+                        tips.push("Aggiungi connettivi temporali: poi, dopo, alla fine");
+                    }
+                    if (!lowerText.includes('soddisf') && !lowerText.includes('contento') && !lowerText.includes('felice')) {
+                        tips.push("Non dimenticare di dire se sei soddisfatto/a del risultato");
+                    }
+                } else { // Prova 2
+                    if (!lowerText.includes('gentile') && !lowerText.includes('egregio')) {
+                        tips.push("Inizia con un saluto formale: 'Gentile' o 'Egregio'");
+                    }
+                    if (!lowerText.includes('scus') && !lowerText.includes('dispiace')) {
+                        tips.push("Includi delle scuse appropriate per la situazione");
+                    }
+                    if (!lowerText.includes('cordiali') && !lowerText.includes('distinti')) {
+                        tips.push("Termina con una formula di cortesia: 'Cordiali saluti'");
+                    }
+                    if (text.includes(' tu ') || text.includes('tuo ')) {
+                        tips.push("⚠️ Usa il 'Lei' formale, non il 'tu'");
+                    }
+                }
+                
+                tipsContent.innerHTML = tips.length > 0 ? tips.map(tip => `• ${tip}`).join('<br>') : "Ottimo lavoro! Il testo sembra ben strutturato.";
+            }
+        }
+
+        function analyzeWriting() {
+            const textarea = document.getElementById('writingArea');
+            const emailSubject = document.getElementById('emailSubjectField');
+            
+            if (!textarea) return;
+            
+            const text = textarea.value.trim();
+            const subject = emailSubject ? emailSubject.value.trim() : '';
+            
+            if (text.length < 10) {
+                alert('Scrivi almeno qualche frase prima di analizzare il testo!');
+                return;
+            }
+            
+            // Determine if it's Prova 1 or 2
+            const isProva1 = document.getElementById('emailSubjectField') === null;
+            
+            let analysis = analyzeTextContent(text, subject, isProva1);
+            
+            const modal = document.getElementById('exerciseModal');
+            const content = document.getElementById('exerciseContent');
+            
+            content.innerHTML = `
+                <div class="exercise-content">
+                    <h3>📊 Analisi del Tuo Testo</h3>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="background: ${analysis.color}; color: white; padding: 20px; border-radius: 15px; display: inline-block; min-width: 200px;">
+                            <h2 style="margin: 0; font-size: 1.5em;">${analysis.level}</h2>
+                            <div style="font-size: 1.3em; margin-top: 8px; font-weight: bold;">${analysis.score}/100</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Valutazione Dettagliata:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                            ${analysis.criteria.map(criterion => `
+                                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid ${criterion.score >= 15 ? '#27ae60' : criterion.score >= 10 ? '#f39c12' : '#e74c3c'};">
+                                    <div style="font-weight: bold; color: #2c3e50; margin-bottom: 8px;">${criterion.name}</div>
+                                    <div style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 8px;">${criterion.description}</div>
+                                    <div style="font-weight: bold; color: ${criterion.score >= 15 ? '#27ae60' : criterion.score >= 10 ? '#f39c12' : '#e74c3c'};">
+                                        ${criterion.score}/20 - ${criterion.feedback}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="background: ${analysis.score >= 70 ? '#e8f5e8' : '#fff3cd'}; border-left: 4px solid ${analysis.score >= 70 ? '#27ae60' : '#f39c12'}; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                        <h4 style="margin-top: 0;">🎯 Consigli per Migliorare:</h4>
+                        <ul style="margin: 10px 0; line-height: 1.6;">
+                            ${analysis.suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button onclick="startWriting()" style="background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
+                            ✏️ Modifica Testo
+                        </button>
+                        <button onclick="showExampleSolution()" style="background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
+                            💡 Vedi Esempio
+                        </button>
+                        <button onclick="closeModal()" style="background: #95a5a6; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            Chiudi
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function analyzeTextContent(text, subject, isProva1) {
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const lowerText = text.toLowerCase();
+            
+            let score = 0;
+            let criteria = [];
+            let suggestions = [];
+            
+            if (isProva1) {
+                // Prova 1 Analysis
+                const targetMin = 120, targetMax = 140;
+                
+                // Lunghezza
+                let lengthScore = 0;
+                let lengthFeedback = '';
+                if (words >= targetMin && words <= targetMax) {
+                    lengthScore = 20;
+                    lengthFeedback = 'Perfetta';
+                } else if (words >= 100 && words < targetMin) {
+                    lengthScore = 15;
+                    lengthFeedback = 'Buona, ma aggiungi dettagli';
+                } else if (words > targetMax && words <= 160) {
+                    lengthScore = 15;
+                    lengthFeedback = 'Buona, ma riduci leggermente';
+                } else {
+                    lengthScore = 10;
+                    lengthFeedback = words < 100 ? 'Troppo breve' : 'Troppo lunga';
+                }
+                
+                criteria.push({
+                    name: 'Lunghezza',
+                    description: `${targetMin}-${targetMax} parole`,
+                    score: lengthScore,
+                    feedback: lengthFeedback
+                });
+                score += lengthScore;
+                
+                // Contenuto narrativo
+                const hasPersonalExperience = lowerText.includes('ho ') || lowerText.includes('sono ') || lowerText.includes('mi sono');
+                const hasTimeReferences = lowerText.includes('quando') || lowerText.includes('ieri') || lowerText.includes('scorso') || lowerText.includes('fa');
+                let contentScore = 0;
+                if (hasPersonalExperience && hasTimeReferences) {
+                    contentScore = 20;
+                } else if (hasPersonalExperience || hasTimeReferences) {
+                    contentScore = 15;
+                } else {
+                    contentScore = 10;
+                }
+                
+                criteria.push({
+                    name: 'Contenuto Narrativo',
+                    description: 'Esperienza personale chiara',
+                    score: contentScore,
+                    feedback: contentScore >= 20 ? 'Eccellente' : contentScore >= 15 ? 'Buono' : 'Da migliorare'
+                });
+                score += contentScore;
+                
+                // Struttura e organizzazione
+                const hasConnectives = lowerText.includes('poi') || lowerText.includes('dopo') || lowerText.includes('alla fine') || lowerText.includes('inoltre');
+                const paragraphs = text.split('\n\n').length;
+                let structureScore = 0;
+                if (hasConnectives && paragraphs >= 2) {
+                    structureScore = 20;
+                } else if (hasConnectives || paragraphs >= 2) {
+                    structureScore = 15;
+                } else {
+                    structureScore = 10;
+                }
+                
+                criteria.push({
+                    name: 'Struttura',
+                    description: 'Organizzazione e connettivi',
+                    score: structureScore,
+                    feedback: structureScore >= 20 ? 'Ben organizzata' : structureScore >= 15 ? 'Discreta' : 'Poco strutturata'
+                });
+                score += structureScore;
+                
+                // Riflessione personale
+                const hasReflection = lowerText.includes('soddisf') || lowerText.includes('contento') || lowerText.includes('felice') || 
+                                    lowerText.includes('imparato') || lowerText.includes('esperienza') || lowerText.includes('penso');
+                let reflectionScore = hasReflection ? 20 : 10;
+                
+                criteria.push({
+                    name: 'Riflessione',
+                    description: 'Valutazione personale',
+                    score: reflectionScore,
+                    feedback: reflectionScore >= 20 ? 'Presente e chiara' : 'Mancante o superficiale'
+                });
+                score += reflectionScore;
+                
+                // Varietà linguistica
+                const hasVariedTenses = (lowerText.includes('ho ') || lowerText.includes('sono andato')) && 
+                                       (lowerText.includes('ero') || lowerText.includes('stavo')) &&
+                                       (lowerText.includes('ora') || lowerText.includes('adesso') || lowerText.includes('oggi'));
+                let varietyScore = hasVariedTenses ? 20 : 15;
+                
+                criteria.push({
+                    name: 'Varietà Linguistica',
+                    description: 'Tempi verbali e lessico',
+                    score: varietyScore,
+                    feedback: varietyScore >= 20 ? 'Ottima varietà' : 'Discreta varietà'
+                });
+                score += varietyScore;
+                
+                // Suggestions for Prova 1
+                if (lengthScore < 20) {
+                    suggestions.push(words < targetMin ? 'Aggiungi più dettagli sulla situazione e le tue emozioni' : 'Riduci alcune parti per rispettare il limite di parole');
+                }
+                if (contentScore < 20) {
+                    suggestions.push('Racconta un\'esperienza personale specifica con dettagli concreti');
+                }
+                if (structureScore < 20) {
+                    suggestions.push('Usa più connettivi temporali (poi, dopo, alla fine) e dividi in paragrafi');
+                }
+                if (reflectionScore < 20) {
+                    suggestions.push('Aggiungi una riflessione: sei soddisfatto/a? Cosa hai imparato?');
+                }
+                if (!hasVariedTenses) {
+                    suggestions.push('Varia i tempi verbali: passato prossimo, imperfetto, presente');
+                }
+                
+            } else {
+                // Prova 2 Analysis
+                const targetMin = 50, targetMax = 80;
+                
+                // Lunghezza
+                let lengthScore = 0;
+                if (words >= targetMin && words <= targetMax) {
+                    lengthScore = 20;
+                } else if (words >= 40 && words < targetMin) {
+                    lengthScore = 15;
+                } else if (words > targetMax && words <= 90) {
+                    lengthScore = 15;
+                } else {
+                    lengthScore = 10;
+                }
+                
+                criteria.push({
+                    name: 'Lunghezza',
+                    description: `${targetMin}-${targetMax} parole`,
+                    score: lengthScore,
+                    feedback: lengthScore >= 20 ? 'Perfetta' : lengthScore >= 15 ? 'Accettabile' : words < targetMin ? 'Troppo breve' : 'Troppo lunga'
+                });
+                score += lengthScore;
+                
+                // Registro formale
+                const hasFormalGreeting = lowerText.includes('gentile') || lowerText.includes('egregio');
+                const usesFormalRegister = !lowerText.includes(' tu ') && !lowerText.includes('tuo ') && !lowerText.includes('ciao');
+                const hasFormalClosing = lowerText.includes('cordiali') || lowerText.includes('distinti');
+                let formalScore = 0;
+                if (hasFormalGreeting && usesFormalRegister && hasFormalClosing) {
+                    formalScore = 20;
+                } else if ((hasFormalGreeting && usesFormalRegister) || (usesFormalRegister && hasFormalClosing)) {
+                    formalScore = 15;
+                } else {
+                    formalScore = 10;
+                }
+                
+                criteria.push({
+                    name: 'Registro Formale',
+                    description: 'Saluto, Lei, chiusura',
+                    score: formalScore,
+                    feedback: formalScore >= 20 ? 'Perfetto' : formalScore >= 15 ? 'Buono' : 'Da migliorare'
+                });
+                score += formalScore;
+                
+                // Contenuto completo
+                const hasApology = lowerText.includes('scus') || lowerText.includes('dispiace') || lowerText.includes('spiacente');
+                const hasExplanation = text.length > 100; // Basic check for explanation
+                const hasRequest = lowerText.includes('chiedo') || lowerText.includes('potrebbe') || lowerText.includes('sarebbe possibile');
+                let contentScore = 0;
+                if (hasApology && hasExplanation && hasRequest) {
+                    contentScore = 20;
+                } else if ((hasApology && hasExplanation) || (hasExplanation && hasRequest)) {
+                    contentScore = 15;
+                } else {
+                    contentScore = 10;
+                }
+                
+                criteria.push({
+                    name: 'Contenuto',
+                    description: 'Scuse, spiegazione, richiesta',
+                    score: contentScore,
+                    feedback: contentScore >= 20 ? 'Completo' : contentScore >= 15 ? 'Quasi completo' : 'Incompleto'
+                });
+                score += contentScore;
+                
+                // Oggetto (se email)
+                let subjectScore = 20;
+                if (subject.length === 0) {
+                    subjectScore = 10;
+                } else if (subject.length < 5) {
+                    subjectScore = 15;
+                }
+                
+                criteria.push({
+                    name: 'Oggetto',
+                    description: 'Chiaro e appropriato',
+                    score: subjectScore,
+                    feedback: subjectScore >= 20 ? 'Appropriato' : subjectScore >= 15 ? 'Accettabile' : 'Mancante o inadeguato'
+                });
+                score += subjectScore;
+                
+                // Cortesia
+                const hasCourtesy = lowerText.includes('grazie') || lowerText.includes('ringrazio') || lowerText.includes('comprensione');
+                let courtesyScore = hasCourtesy ? 20 : 15;
+                
+                criteria.push({
+                    name: 'Cortesia',
+                    description: 'Formule di cortesia',
+                    score: courtesyScore,
+                    feedback: courtesyScore >= 20 ? 'Molto cortese' : 'Sufficientemente cortese'
+                });
+                score += courtesyScore;
+                
+                // Suggestions for Prova 2
+                if (lengthScore < 20) {
+                    suggestions.push(words < targetMin ? 'Aggiungi più dettagli nella spiegazione' : 'Sii più conciso, elimina parti non essenziali');
+                }
+                if (formalScore < 20) {
+                    if (!hasFormalGreeting) suggestions.push('Inizia con "Gentile" o "Egregio" + titolo + cognome');
+                    if (!usesFormalRegister) suggestions.push('Usa sempre il "Lei" formale, mai il "tu"');
+                    if (!hasFormalClosing) suggestions.push('Termina con "Cordiali saluti" o "Distinti saluti"');
+                }
+                if (contentScore < 20) {
+                    if (!hasApology) suggestions.push('Includi delle scuse appropriate per la situazione');
+                    if (!hasRequest) suggestions.push('Fai una richiesta chiara e specifica');
+                }
+                if (subjectScore < 20) {
+                    suggestions.push('Scrivi un oggetto chiaro che riassuma la richiesta');
+                }
+            }
+            
+            // Determine overall level
+            let level = 'Insufficiente';
+            let color = '#e74c3c';
+            if (score >= 85) { level = 'Eccellente'; color = '#27ae60'; }
+            else if (score >= 70) { level = 'Buono'; color = '#f39c12'; }
+            else if (score >= 55) { level = 'Sufficiente'; color = '#3498db'; }
+            
+            if (suggestions.length === 0) {
+                suggestions.push('Ottimo lavoro! Il testo rispetta tutti i criteri principali.');
+            }
+            
+            return {
+                score: score,
+                level: level,
+                color: color,
+                criteria: criteria,
+                suggestions: suggestions
+            };
+        }
+
+        function showExampleSolution() {
+            // This would show example solutions for each exercise
+            alert('Funzione esempio in sviluppo! Presto vedrai soluzioni modello per ogni traccia.');
         }
 
         // Chiudi modal cliccando fuori
@@ -1951,5 +2436,5 @@
             }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9874c19106219d48',t:'MTc1OTI0NjE2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9874d673579803fd',t:'MTc1OTI0NzAyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
