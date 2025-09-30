@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -6,46 +8,59 @@
   <title>Ascolto - Esame Facile</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset et style global */
-    body {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
       font-family: 'Roboto', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f4f8;
+      margin:0; 
+      padding:0;
+      background-color: #f0f4f8; 
       color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
+    a { text-decoration: none; color: inherit; }
 
-    /* Header */
+    /* HEADER */
     header {
       background-color: #004080;
       color: white;
       padding: 15px 30px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
     }
     header .logo {
       display: flex;
       align-items: center;
     }
     header .logo img {
-      height: 45px;
-      margin-right: 12px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.5em;
+    }
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
     }
     header nav a {
       color: white;
-      margin-left: 20px;
-      text-decoration: none;
       font-weight: bold;
-      transition: color 0.2s;
-    }
-    header nav a:hover {
-      color: #7cc242;
     }
 
-    /* Main */
+    /* MAIN */
     main {
-      padding: 40px 20px;
+      flex: 1;
+      padding: 120px 20px 40px;
       text-align: center;
     }
     main h2 {
@@ -54,16 +69,46 @@
       color: #004080;
     }
 
-    /* Grille des tests */
+    /* Bloc Regole Generali */
+    .regole {
+      max-width: 1000px;
+      margin: 30px auto 40px auto;
+      background-color: #ffffff;
+      border-left: 6px solid #009688;
+      border-radius: 10px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      padding: 25px 30px;
+      font-family: 'Roboto', Arial, sans-serif;
+      color: #123241;
+      line-height: 1.65;
+    }
+    .regole h2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      color: #004080;
+      gap: 10px;
+    }
+    .regole h2 img.icon-regole {
+      width: 28px;
+      height: 28px;
+    }
+    .regole p {
+      text-align: justify;
+      font-size: 1em;
+      margin: 12px 0;
+    }
+
+    /* Test grid */
     .test-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 25px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 0 auto 40px auto;
     }
-
-    /* Boutons */
     .test-button {
       display: flex;
       align-items: center;
@@ -84,88 +129,96 @@
       background: linear-gradient(135deg, #00796b, #26a69a);
     }
 
-    /* Footer */
+    /* Back button */
+    #backBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(44, 62, 80, 0.9);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+      padding: 12px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* FOOTER */
     footer {
       background-color: #004080;
       color: white;
       padding: 15px 20px;
       text-align: center;
       font-size: 0.9em;
-      margin-top: 40px;
+      margin-top: auto;
     }
     footer a {
-      color: #7cc242;
+      color: white;
       text-decoration: underline;
       margin-right: 15px;
     }
 
-    /* Mobile */
-    @media (max-width: 600px) {
-      .test-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+    /* ----------- RESPONSIVE ----------------- */
+    @media (max-width: 768px) {
+      body {
+        font-size: 1em;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 8px;
+        gap: 5px;
+        height: auto;
+      }
+      header .logo {
+        margin-bottom: 0;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      header .logo img {
+        height: 40px;
+        margin-right: 10px;
+      }
+      header h1 {
+        font-size: 1.3em;
+      }
+      header nav {
+        width: 100%;
+        margin-top: 8px;
+        background: #003366;
+        padding: 7px 0;
+        border-radius: 5px;
+        justify-content: center;
+        gap: 13px;
+      }
+      .regole {
+        padding: 18px;
+        margin: 20px 12px 28px 12px;
+      }
+      .regole h2 {
+        font-size: 1.3em;
+      }
+      .regole h2 img.icon-regole {
+        width: 24px;
+        height: 24px;
+      }
+      .regole p {
+        font-size: 0.95em;
       }
       .test-button {
         padding: 20px;
         font-size: 1.1em;
       }
+      .test-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
     }
-	/* Bloc Regole Generali - Ascolto */
-.regole {
-  max-width: 1000px;            /* largeur du bloc */
-  margin: 30px auto 40px auto;  /* centré avec marge */
-  background-color: #ffffff;    /* fond blanc */
-  border-left: 6px solid #009688; /* barre colorée à gauche */
-  border-radius: 10px;          /* coins arrondis */
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08); /* ombre légère */
-  padding: 25px 30px;           /* espace intérieur */
-  font-family: 'Roboto', Arial, sans-serif;
-  color: #123241;
-  line-height: 1.65;
-}
-
-.regole h2 {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* centrer le titre et l'icône */
-  font-size: 1.6em;
-  margin-bottom: 20px;
-  color: #004080;
-  gap: 10px; /* espace entre l'icône et le texte */
-}
-
-.regole h2 img.icon-regole {
-  width: 28px;    /* largeur de l'icône */
-  height: 28px;   /* hauteur de l'icône */
-}
-
-.regole p {
-  text-align: justify; /* texte justifié */
-  font-size: 1em;
-  margin: 12px 0;
-}
-
-/* Responsive : mobile */
-@media (max-width: 600px) {
-  .regole {
-    padding: 18px;
-    margin: 20px 12px 28px 12px;
-  }
-
-  .regole h2 {
-    font-size: 1.3em;
-  }
-
-  .regole h2 img.icon-regole {
-    width: 24px;
-    height: 24px;
-  }
-
-  .regole p {
-    font-size: 0.95em;
-  }
-}
-
   </style>
 </head>
 <body>
@@ -177,42 +230,35 @@
     </div>
     <nav>
       <a href="../index.html">Home</a>
-	  <a href="#">Chi siamo</a>
+      <a href="#">Chi siamo</a>
       <a href="../esami.html">Esami</a>
       <a href="#">Contatti</a>
     </nav>
   </header>
 
   <main>
-  <!-- Bloc Regole Generali -->
-<section class="regole">
-  <h2>
+    <!-- Bloc Regole Generali -->
+    <section class="regole">
+     <h2>
     <!-- Icône image -->
     <img src="regole.png" alt="Icona informativa" class="icon-regole">
     Comprensione della lettura: Regole generali
   </h2>
-
   <p>
-    All'esame CILS la comprensione della lettura 50 minuti e comprende tre prove. 
-    Tu devi completare tutte le tre prove prima di cliccare su <strong> Termina Esame </strong>.
+    All'esame CILS, la comprensione della lettura ha una durata di un'ora e comprende tre prove 
+    Il candidato deve svolgerle tutte, nell'ordine che preferisce.
   </p>
-
   <p>
-    Durante l’esame, il passaggio da una prova all’altra avviene automaticamente. 
-    Una volta avviato l’audio, non puoi più controllarne la riproduzione. 
-    Il test si interrompe automaticamente al termine dell’audio.
-  </p>
-
-  <p>
-    Il punteggio complessivo delle tre prove è espresso su 20 punti. 
-    Come per l’esame ufficiale, la soglia di superamento è 11/20. 
-    Solo al termine del test è possibile visualizzare le risposte e la tue correzione.
+    Come per l’esame ufficiale, il punteggio complessivo delle tre prove è espresso su 20 punti. 
+    La soglia di superamento è 11/20. 
+    Dopo aver svolgo tutte le prove, clicca sul pulzante <strong> Termina esame<strong/> per visualizzare il tuo risultato e la correzione.
   </p>
 </section>
 <!-- Fin Bloc Regole Generali -->
-    <h2>Comprensione della lettura : Test di allenamento</h2>
+    <h2>Lettura : Test di allenamento</h2>
 	<div class="test-grid">
-      <!---<a href="test1.html" class="test-button">Allenamento 1</a>
+      <a href="test1.html" class="test-button">Allenamento 1</a>
+      <!-- 
       <a href="test2.html" class="test-button">Allenamento 2</a>
       <a href="test3.html" class="test-button">Allenamento 3</a>
       <a href="test4.html" class="test-button">Allenamento 4</a>
@@ -231,13 +277,14 @@
       <a href="test17.html" class="test-button">Allenamento 17</a>
       <a href="test18.html" class="test-button">Allenamento 18</a>
       <a href="test19.html" class="test-button">Allenamento 19</a>
-      <a href="test20.html" class="test-button">Allenamento 20</a> --->
+      <a href="test20.html" class="test-button">Allenamento 20</a>
+      -->
     </div>
-	
-	 <!-- Back Button -->
-    <button id="backBtn" onclick="window.location.href='../cils.html'" style="position: fixed; bottom: 20px; left: 20px; background: rgba(44, 62, 80, 0.9); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                ← Indietro
-     </button>
+
+    <!-- Back Button -->
+    <button id="backBtn" onclick="window.location.href='../cils.html'">
+      ← Indietro
+    </button>
   </main>
 
   <footer>
