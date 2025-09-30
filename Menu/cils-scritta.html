@@ -1070,12 +1070,497 @@
     </div>
 
     <script>
+        let currentStep = 0;
+        let userText = '';
+        let wordCount = 0;
+
         function startPractice() {
-            alert('Funzionalità in sviluppo! Presto potrai esercitarti con tracce simulate e correzione automatica.');
+            showGuidedPractice();
         }
 
         function startPractice2() {
-            alert('Esercitazione Prova 2 in sviluppo! Presto potrai praticare la scrittura di lettere formali con feedback immediato.');
+            showEmailPractice();
+        }
+
+        function showGuidedPractice() {
+            const modal = document.getElementById('exerciseModal');
+            const content = document.getElementById('exerciseContent');
+            
+            content.innerHTML = `
+                <div class="exercise-content">
+                    <h3>🎯 Esercitazione Guidata - Prova 1</h3>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <strong>Traccia:</strong> Racconta come hai affrontato il tuo primo giorno in una nuova scuola o università. 
+                        Spiega le tue emozioni e se sei soddisfatto/a di come ti sei comportato/a.
+                    </div>
+                    
+                    <div id="guidedSteps">
+                        <div class="step-container">
+                            <div style="background: #27ae60; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                                <strong>PASSO 1/4: Pianificazione (2 minuti)</strong>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                                <p><strong>Prima di scrivere, rispondi mentalmente a queste domande:</strong></p>
+                                <ul style="line-height: 1.6;">
+                                    <li>🏫 Quale scuola/università? Quando è successo?</li>
+                                    <li>😰 Come ti sentivi prima di entrare?</li>
+                                    <li>👥 Cosa hai fatto per socializzare?</li>
+                                    <li>📚 Ci sono stati problemi pratici (orari, aule)?</li>
+                                    <li>🤔 Cosa pensi ora di quel giorno?</li>
+                                </ul>
+                                <div style="text-align: center; margin-top: 15px;">
+                                    <button onclick="nextStep()" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                        Continua al Passo 2 →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            currentStep = 1;
+        }
+
+        function nextStep() {
+            const stepsContainer = document.getElementById('guidedSteps');
+            currentStep++;
+            
+            if (currentStep === 2) {
+                stepsContainer.innerHTML = `
+                    <div class="step-container">
+                        <div style="background: #3498db; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                            <strong>PASSO 2/4: Struttura del Testo</strong>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                            <p><strong>Il tuo testo deve avere questa struttura:</strong></p>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0;">
+                                <div style="background: white; padding: 12px; border-left: 4px solid #e74c3c; border-radius: 5px;">
+                                    <strong>Paragrafo 1 (40-50 parole)</strong><br>
+                                    <small>Situazione iniziale: quando, dove, perché eri nervoso/a</small>
+                                </div>
+                                <div style="background: white; padding: 12px; border-left: 4px solid #f39c12; border-radius: 5px;">
+                                    <strong>Paragrafo 2 (50-60 parole)</strong><br>
+                                    <small>Azioni: cosa hai fatto, come ti sei comportato/a</small>
+                                </div>
+                                <div style="background: white; padding: 12px; border-left: 4px solid #27ae60; border-radius: 5px;">
+                                    <strong>Paragrafo 3 (30-40 parole)</strong><br>
+                                    <small>Riflessione: sei soddisfatto/a? Cosa hai imparato?</small>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 15px;">
+                                <button onclick="nextStep()" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                    Inizia a Scrivere →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 3) {
+                stepsContainer.innerHTML = `
+                    <div class="step-container">
+                        <div style="background: #9b59b6; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                            <strong>PASSO 3/4: Scrivi il Tuo Testo</strong>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>Scrivi qui il tuo testo:</strong>
+                                <div id="wordCounter" style="background: #3498db; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                    Parole: 0/140
+                                </div>
+                            </div>
+                            <textarea id="userTextArea" 
+                                placeholder="Il mio primo giorno all'università è stato..." 
+                                style="width: 100%; height: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1em; line-height: 1.5; resize: vertical;"
+                                oninput="updateWordCount()"></textarea>
+                            
+                            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 15px 0; border-radius: 5px;">
+                                <strong>💡 Suggerimenti mentre scrivi:</strong>
+                                <ul style="margin: 5px 0; font-size: 0.9em;">
+                                    <li>Usa connettivi: "Inizialmente...", "Poi...", "Alla fine..."</li>
+                                    <li>Varia i tempi: passato prossimo, imperfetto, presente</li>
+                                    <li>Sii specifico: nomi, luoghi, emozioni precise</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 15px;">
+                                <button onclick="nextStep()" style="background: #9b59b6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                    Analizza il Testo →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 4) {
+                analyzeText();
+            }
+        }
+
+        function updateWordCount() {
+            const textarea = document.getElementById('userTextArea');
+            const counter = document.getElementById('wordCounter');
+            
+            if (textarea && counter) {
+                const text = textarea.value.trim();
+                wordCount = text === '' ? 0 : text.split(/\s+/).length;
+                userText = text;
+                
+                let color = '#3498db';
+                if (wordCount < 120) color = '#e74c3c';
+                else if (wordCount > 140) color = '#f39c12';
+                else color = '#27ae60';
+                
+                counter.style.backgroundColor = color;
+                counter.textContent = `Parole: ${wordCount}/140`;
+            }
+        }
+
+        function analyzeText() {
+            const stepsContainer = document.getElementById('guidedSteps');
+            const text = userText;
+            
+            // Analisi semplice del testo
+            const hasIntroduction = text.toLowerCase().includes('primo') || text.toLowerCase().includes('inizial') || text.toLowerCase().includes('giorno');
+            const hasActions = text.includes('ho') || text.includes('sono') || text.includes('mi sono');
+            const hasReflection = text.toLowerCase().includes('soddisf') || text.toLowerCase().includes('pens') || text.toLowerCase().includes('imparato');
+            const hasConnectives = text.includes('poi') || text.includes('dopo') || text.includes('alla fine') || text.includes('inoltre');
+            
+            let score = 0;
+            let feedback = [];
+            
+            if (wordCount >= 120 && wordCount <= 140) {
+                score += 25;
+                feedback.push('✅ Lunghezza perfetta (120-140 parole)');
+            } else if (wordCount < 120) {
+                feedback.push('⚠️ Testo troppo breve, aggiungi dettagli');
+            } else {
+                feedback.push('⚠️ Testo troppo lungo, riduci alcune parti');
+            }
+            
+            if (hasIntroduction) {
+                score += 25;
+                feedback.push('✅ Buona introduzione della situazione');
+            } else {
+                feedback.push('❌ Manca una chiara introduzione della situazione');
+            }
+            
+            if (hasActions) {
+                score += 25;
+                feedback.push('✅ Descrizione delle azioni intraprese');
+            } else {
+                feedback.push('❌ Descrivi meglio cosa hai fatto');
+            }
+            
+            if (hasReflection) {
+                score += 25;
+                feedback.push('✅ Buona riflessione personale');
+            } else {
+                feedback.push('❌ Aggiungi una riflessione: sei soddisfatto/a?');
+            }
+            
+            if (hasConnectives) {
+                feedback.push('✅ Uso di connettivi temporali');
+            } else {
+                feedback.push('💡 Usa più connettivi: poi, dopo, alla fine...');
+            }
+            
+            let level = 'Insufficiente';
+            let color = '#e74c3c';
+            if (score >= 75) { level = 'Eccellente'; color = '#27ae60'; }
+            else if (score >= 50) { level = 'Buono'; color = '#f39c12'; }
+            else if (score >= 25) { level = 'Sufficiente'; color = '#3498db'; }
+            
+            stepsContainer.innerHTML = `
+                <div class="step-container">
+                    <div style="background: ${color}; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                        <strong>PASSO 4/4: Analisi del Tuo Testo</strong>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="background: ${color}; color: white; padding: 15px; border-radius: 10px; display: inline-block;">
+                                <h3 style="margin: 0;">Valutazione: ${level}</h3>
+                                <div style="font-size: 1.2em; margin-top: 5px;">Punteggio: ${score}/100</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>📊 Feedback Dettagliato:</strong>
+                            <ul style="margin: 10px 0; line-height: 1.6;">
+                                ${feedback.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #e8f5e8; border-left: 4px solid #27ae60; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                            <strong>🎯 Prossimi Passi:</strong>
+                            <p style="margin: 5px 0;">
+                                ${score >= 75 ? 'Ottimo lavoro! Continua a praticare con altre tracce per mantenere questo livello.' :
+                                  score >= 50 ? 'Buon lavoro! Concentrati sui punti mancanti e riprova.' :
+                                  'Rileggi gli esempi e riprova. Ricorda la struttura: situazione → azioni → riflessione.'}
+                            </p>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="closeModal()" style="background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+                                Chiudi
+                            </button>
+                            <button onclick="startPractice()" style="background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer;">
+                                Riprova
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showEmailPractice() {
+            const modal = document.getElementById('exerciseModal');
+            const content = document.getElementById('exerciseContent');
+            
+            content.innerHTML = `
+                <div class="exercise-content">
+                    <h3>📧 Esercitazione Guidata - Prova 2</h3>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <strong>Situazione:</strong> Hai un appuntamento importante dal dentista domani alle 14:00, 
+                        ma il tuo capo ti ha appena comunicato una riunione urgente alla stessa ora. 
+                        Scrivi una email al dentista per spostare l'appuntamento.
+                    </div>
+                    
+                    <div id="emailSteps">
+                        <div class="step-container">
+                            <div style="background: #3498db; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                                <strong>PASSO 1/3: Struttura Email Formale</strong>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                    <div style="background: white; padding: 12px; border-left: 4px solid #3498db; border-radius: 5px;">
+                                        <strong>1. Oggetto</strong><br>
+                                        <small>Chiaro e specifico</small><br>
+                                        <em>Es: "Richiesta spostamento appuntamento"</em>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-left: 4px solid #27ae60; border-radius: 5px;">
+                                        <strong>2. Saluto</strong><br>
+                                        <small>Formale</small><br>
+                                        <em>Es: "Gentile Dottor Rossi"</em>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-left: 4px solid #f39c12; border-radius: 5px;">
+                                        <strong>3. Corpo</strong><br>
+                                        <small>Scuse + Motivo + Richiesta</small><br>
+                                        <em>Breve ma completo</em>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-left: 4px solid #9b59b6; border-radius: 5px;">
+                                        <strong>4. Chiusura</strong><br>
+                                        <small>Formula cortese + Firma</small><br>
+                                        <em>Es: "Cordiali saluti"</em>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-top: 15px;">
+                                    <button onclick="nextEmailStep()" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                        Continua →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            currentStep = 1;
+        }
+
+        function nextEmailStep() {
+            const stepsContainer = document.getElementById('emailSteps');
+            currentStep++;
+            
+            if (currentStep === 2) {
+                stepsContainer.innerHTML = `
+                    <div class="step-container">
+                        <div style="background: #27ae60; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                            <strong>PASSO 2/3: Scrivi la Tua Email</strong>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>Componi la tua email:</strong>
+                                <div id="emailWordCounter" style="background: #3498db; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                    Parole: 0/80
+                                </div>
+                            </div>
+                            
+                            <div style="background: white; border: 2px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Oggetto:</strong>
+                                    <input type="text" id="emailSubject" placeholder="Scrivi l'oggetto..." 
+                                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 5px;">
+                                </div>
+                                
+                                <textarea id="emailTextArea" 
+                                    placeholder="Gentile Dottor Rossi,&#10;&#10;Le scrivo per..." 
+                                    style="width: 100%; height: 150px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 1em; line-height: 1.5; resize: vertical;"
+                                    oninput="updateEmailWordCount()"></textarea>
+                            </div>
+                            
+                            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 15px 0; border-radius: 5px;">
+                                <strong>💡 Checklist:</strong>
+                                <div style="font-size: 0.9em; margin-top: 5px;">
+                                    ✓ Usa "Lei" (non "tu")<br>
+                                    ✓ Spiega brevemente il motivo<br>
+                                    ✓ Proponi alternative concrete<br>
+                                    ✓ Mantieni tono rispettoso
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 15px;">
+                                <button onclick="nextEmailStep()" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                    Analizza Email →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 3) {
+                analyzeEmail();
+            }
+        }
+
+        function updateEmailWordCount() {
+            const textarea = document.getElementById('emailTextArea');
+            const counter = document.getElementById('emailWordCounter');
+            
+            if (textarea && counter) {
+                const text = textarea.value.trim();
+                wordCount = text === '' ? 0 : text.split(/\s+/).length;
+                userText = text;
+                
+                let color = '#3498db';
+                if (wordCount < 50) color = '#e74c3c';
+                else if (wordCount > 80) color = '#f39c12';
+                else color = '#27ae60';
+                
+                counter.style.backgroundColor = color;
+                counter.textContent = `Parole: ${wordCount}/80`;
+            }
+        }
+
+        function analyzeEmail() {
+            const stepsContainer = document.getElementById('emailSteps');
+            const text = userText;
+            const subject = document.getElementById('emailSubject')?.value || '';
+            
+            // Analisi email
+            const hasFormalGreeting = text.toLowerCase().includes('gentile') || text.toLowerCase().includes('egregio');
+            const hasApology = text.toLowerCase().includes('scus') || text.toLowerCase().includes('dispiace');
+            const hasExplanation = text.toLowerCase().includes('riunione') || text.toLowerCase().includes('lavoro') || text.toLowerCase().includes('impegno');
+            const hasRequest = text.toLowerCase().includes('spostare') || text.toLowerCase().includes('rimandare') || text.toLowerCase().includes('nuovo');
+            const hasFormalClosing = text.toLowerCase().includes('cordiali') || text.toLowerCase().includes('distinti');
+            const usesFormalRegister = text.includes('Lei') || text.includes('La ') || !text.toLowerCase().includes(' tu ');
+            
+            let score = 0;
+            let feedback = [];
+            
+            if (subject.length > 5) {
+                score += 15;
+                feedback.push('✅ Oggetto presente e appropriato');
+            } else {
+                feedback.push('❌ Oggetto mancante o troppo breve');
+            }
+            
+            if (wordCount >= 50 && wordCount <= 80) {
+                score += 15;
+                feedback.push('✅ Lunghezza appropriata (50-80 parole)');
+            } else if (wordCount < 50) {
+                feedback.push('⚠️ Email troppo breve, aggiungi dettagli');
+            } else {
+                feedback.push('⚠️ Email troppo lunga, sii più conciso');
+            }
+            
+            if (hasFormalGreeting) {
+                score += 15;
+                feedback.push('✅ Saluto formale corretto');
+            } else {
+                feedback.push('❌ Manca saluto formale (Gentile/Egregio + titolo)');
+            }
+            
+            if (hasApology) {
+                score += 15;
+                feedback.push('✅ Scuse appropriate');
+            } else {
+                feedback.push('❌ Mancano le scuse per l\'inconveniente');
+            }
+            
+            if (hasExplanation) {
+                score += 15;
+                feedback.push('✅ Spiegazione del motivo');
+            } else {
+                feedback.push('❌ Spiega meglio il motivo dello spostamento');
+            }
+            
+            if (hasRequest) {
+                score += 15;
+                feedback.push('✅ Richiesta chiara di nuovo appuntamento');
+            } else {
+                feedback.push('❌ Manca richiesta esplicita di nuovo appuntamento');
+            }
+            
+            if (hasFormalClosing) {
+                score += 10;
+                feedback.push('✅ Chiusura formale appropriata');
+            } else {
+                feedback.push('❌ Manca formula di chiusura formale');
+            }
+            
+            if (usesFormalRegister) {
+                feedback.push('✅ Registro formale mantenuto');
+            } else {
+                feedback.push('❌ Usa il "Lei" formale, non il "tu"');
+            }
+            
+            let level = 'Insufficiente';
+            let color = '#e74c3c';
+            if (score >= 80) { level = 'Eccellente'; color = '#27ae60'; }
+            else if (score >= 60) { level = 'Buono'; color = '#f39c12'; }
+            else if (score >= 40) { level = 'Sufficiente'; color = '#3498db'; }
+            
+            stepsContainer.innerHTML = `
+                <div class="step-container">
+                    <div style="background: ${color}; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                        <strong>PASSO 3/3: Analisi della Tua Email</strong>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="background: ${color}; color: white; padding: 15px; border-radius: 10px; display: inline-block;">
+                                <h3 style="margin: 0;">Valutazione: ${level}</h3>
+                                <div style="font-size: 1.2em; margin-top: 5px;">Punteggio: ${score}/100</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>📊 Feedback Dettagliato:</strong>
+                            <ul style="margin: 10px 0; line-height: 1.6;">
+                                ${feedback.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #e8f5e8; border-left: 4px solid #27ae60; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                            <strong>🎯 Suggerimenti:</strong>
+                            <p style="margin: 5px 0;">
+                                ${score >= 80 ? 'Perfetto! La tua email è professionale e completa.' :
+                                  score >= 60 ? 'Buon lavoro! Migliora i punti mancanti per raggiungere l\'eccellenza.' :
+                                  'Rileggi la struttura delle email formali e riprova. Ricorda: saluto → scuse → spiegazione → richiesta → chiusura.'}
+                            </p>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="closeModal()" style="background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+                                Chiudi
+                            </button>
+                            <button onclick="startPractice2()" style="background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer;">
+                                Riprova
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         const exercises = {
@@ -1224,5 +1709,5 @@
             }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987498a9a764bb36',t:'MTc1OTI0NDQ5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9874a08b67a4d16e',t:'MTc1OTI0NDgxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
