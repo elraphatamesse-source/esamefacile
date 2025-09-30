@@ -406,8 +406,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📝 Analisi delle strutture di comunicazione</h1>
-            <p>Leggi le istruzioni ed esegui la prova</p>
+            <h1>📝 Analisi delle Strutture di Comunicazione</h1>
+            <p>Test n. 1 - Italiano</p>
         </div>
 
         <div class="content">
@@ -422,7 +422,7 @@
             </div>
 
             <!-- Back Button -->
-            <button id="backBtn" onclick="window.location.href='analisi.html'" style="position: fixed; bottom: 20px; left: 20px; background: rgba(44, 62, 80, 0.9); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+            <button id="backBtn" onclick="window.location.href='lettura.html'" style="position: fixed; bottom: 20px; left: 20px; background: rgba(44, 62, 80, 0.9); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
                 ← Indietro
             </button>
 
@@ -452,6 +452,8 @@
 
             <div id="test1" class="test-container active">
                 <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 1</h2>
+                <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px; font-style: italic;">Completa il testo con gli aggettivi e i pronomi.</p>
+                
                 <div class="text-passage">
                     <h3 style="text-align: center; margin-bottom: 20px;">CHIARA FERRAGNI E LE <u>SUE</u> PASSIONI</h3>
                     
@@ -471,7 +473,9 @@
             </div>
 
             <div id="test2" class="test-container">
-                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 2</h2>                
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 2</h2>
+                <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px; font-style: italic;">Completa il testo con le forme giuste dei verbi che sono tra parentesi.</p>
+                
                 <div class="text-passage">
                     <h3 style="text-align: center; margin-bottom: 20px;">RITA SALA: "SONO IO LA REGINA DELLO ZAFFERANO"</h3>
                     
@@ -488,7 +492,9 @@
             </div>
 
             <div id="test3" class="test-container">
-                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 3</h2>                
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 3</h2>
+                <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px; font-style: italic;">Completa il testo. Scegli una delle proposte di completamento.</p>
+                
                 <div class="text-passage">
                     <h3 style="text-align: center; margin-bottom: 20px;">IL FUTURO VA VERSO IED</h3>
                     
@@ -621,7 +627,9 @@
             </div>
 
             <div id="test4" class="test-container">
-                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 4</h2>                
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.4em;">Prova n. 4</h2>
+                <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px; font-style: italic;">Scegli per ogni espressione una delle quattro situazioni di comunicazione.</p>
+                
                 <form id="testForm4">
                     <div class="question">
                         <div class="question-text"><span class="question-number">1.</span> <strong>ATTENZIONE</strong> - Gli studenti possono richiedere la modifica del piano di studio dal 1 al 30 aprile per esami da sostenere a partire dalla sessione di giugno-luglio.</div>
@@ -871,10 +879,10 @@
         // Correct answers for all four tests
         const correctAnswers = {
             test1: {
-                q1: 'suo', q2: 'cui', q3: 'altri', q4: 'quelle', q5: 'lei', q6: 'suoi', q7: 'le', q8: 'molte', q9: 'la', q10: 'quello', q11: ['niente','nulla'], q12: 'mie', q13: 'mi', q14: 'sua', q15: 'me', q16: 'mia', q17: 'vostra', q18: 'miei', q19: 'prima', q20: 'mi'
+                q1: 'suo', q2: 'cui', q3: 'altri', q4: 'quelle', q5: 'lei', q6: 'suoi', q7: 'le', q8: 'molte', q9: 'la', q10: 'quello', q11: 'niente', q12: 'mie', q13: 'mi', q14: 'sua', q15: 'me', q16: 'mia', q17: 'vostra', q18: 'nostri', q19: 'prima', q20: 'mi'
             },
             test2: {
-                q1: 'aggiunse', q2: 'porterà', q3: 'è nata', q4: 'ha lavotato', q5: 'è arrivato', q6: 'mi sono ricordata', q7: ['fare'],['avrei'], q8: ['proviamo'],['prova'] q9: 'abita', q10: 'è riemerso', q11: 'coltiva', q12: 'sarebbero voluti', q13: 'si è arresa', q14: 'mi sono rivolta', q15: 'desse', q16: 'mi sono presentata', q17: 'ho pensato', q18: 'mi sono gettata', q19: 'sono arrivata', q20: 'rappresenta'
+                q1: 'aggiunse', q2: 'porterà', q3: 'nacque', q4: 'lavorò', q5: 'arrivò', q6: 'mi ricordai', q7: 'fare', q8: 'proviamo', q9: 'abita', q10: 'riemerse', q11: 'coltiva', q12: 'sarebbero voluti', q13: 'si arrese', q14: 'mi rivolsi', q15: 'desse', q16: 'mi presentai', q17: 'pensai', q18: 'mi gettai', q19: 'sono arrivata', q20: 'rappresenta'
             },
             test3: {
                 q1: 'B', q2: 'C', q3: 'D', q4: 'B', q5: 'C', q6: 'A', q7: 'B', q8: 'A', q9: 'C', q10: 'D', q11: 'B', q12: 'A', q13: 'C', q14: 'D', q15: 'B'
@@ -1282,5 +1290,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985d3ad5d3c4a105',t:'MTc1ODk5OTQ3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873cb6e30dad6ae',t:'MTc1OTIzNjA4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
