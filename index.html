@@ -150,13 +150,12 @@
     </div>
   </section>
 
+  <p id="auth-message" role="status" aria-live="polite" style="display:none;text-align:center;"></p>
+
   <!-- Formulaire connexion -->
   <section class="form-section active" id="login">
     <h3>Accedi per iniziare</h3>
     <form id="loginForm">
-      <label for="nome-login">Nome :</label>
-      <input type="text" id="nome-login" name="nome-login" required>
-
       <label for="email">Email :</label>
       <input type="email" id="email" name="email" required>
 
@@ -199,32 +198,114 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // La publishable key est conçue pour le navigateur. Les données privées
+    // devront rester protégées par RLS et des politiques adaptées.
+    const SUPABASE_URL = 'https://eiyobroonjfugujivosc.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_ZCW8osVHp2bg5-9sPJ3bNg_C8f1335T';
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const authMessage = document.getElementById('auth-message');
+
+    function showAuthMessage(message, type = 'info') {
+      authMessage.textContent = message;
+      authMessage.style.display = 'block';
+      authMessage.style.color = type === 'error' ? '#a12622' : '#155724';
+      authMessage.style.background = type === 'error' ? '#fdecea' : '#e8f5e9';
+      authMessage.style.padding = '12px';
+      authMessage.style.margin = '16px auto';
+      authMessage.style.maxWidth = '600px';
+      authMessage.style.borderRadius = '8px';
+    }
+
     function toggleForm(form) {
       document.getElementById('login').classList.remove('active');
       document.getElementById('signup').classList.remove('active');
       document.getElementById(form).classList.add('active');
+      authMessage.style.display = 'none';
       window.scrollTo({ top: document.getElementById(form).offsetTop - 20, behavior: 'smooth' });
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const nomeLogin = document.getElementById('nome-login').value;
-      const email = document.getElementById('email').value;
+      const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      if(nomeLogin && email && password){
-        sessionStorage.setItem('username', nomeLogin);
-        sessionStorage.setItem('loggedIn', 'true');
-        window.location.href = 'Menu/esami.html';
-      } else { alert('Inserisci nome, email e password.'); }
+      const submitButton = this.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Connessione...';
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      submitButton.disabled = false;
+      submitButton.textContent = 'Accedi';
+
+      if (error) {
+        showAuthMessage('Accesso non riuscito. Verifica l’e-mail e la password, puis réessaie.', 'error');
+        return;
+      }
+
+      sessionStorage.setItem('username', data.user.user_metadata?.full_name || data.user.email);
+      sessionStorage.setItem('loggedIn', 'true'); // Compatibilité avec les pages existantes, pas un contrôle d'accès sécurisé.
+      window.location.href = 'Menu/esami.html';
     });
 
-    document.getElementById('signupForm').addEventListener('submit', function(e){
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      sessionStorage.setItem('username', nome);
-      sessionStorage.setItem('loggedIn', 'true');
-      window.location.href = 'Menu/esami.html';
+      const nome = document.getElementById('nome').value.trim();
+      const cognome = document.getElementById('cognome').value.trim();
+      const email = document.getElementById('email-signup').value.trim();
+      const password = document.getElementById('password-signup').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const submitButton = this.querySelector('button[type="submit"]');
+
+      if (password !== confirmPassword) {
+        showAuthMessage('Le password non corrispondono.', 'error');
+        return;
+      }
+      if (password.length < 8) {
+        showAuthMessage('La password deve contenere almeno 8 caratteri.', 'error');
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Iscrizione...';
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { first_name: nome, last_name: cognome, full_name: (nome + ' ' + cognome).trim() },
+          emailRedirectTo: window.location.origin + '/'
+        }
+      });
+      submitButton.disabled = false;
+      submitButton.textContent = 'Iscriviti';
+
+      if (error) {
+        showAuthMessage('Iscrizione non riuscita: ' + error.message, 'error');
+        return;
+      }
+
+      if (data.session) {
+        sessionStorage.setItem('username', data.user.user_metadata?.full_name || email);
+        sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = 'Menu/esami.html';
+      } else {
+        showAuthMessage('Registrazione effettuata! Controlla la tua casella e-mail e clicca sul link di conferma prima di accedere.');
+        this.reset();
+      }
+    });
+
+    // Si Supabase restaure une session après le clic sur le lien de confirmation,
+    // on envoie l'utilisateur vers le menu principal.
+    supabaseClient.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        sessionStorage.setItem('username', data.session.user.user_metadata?.full_name || data.session.user.email);
+        sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = 'Menu/esami.html';
+      }
     });
   </script>
 
