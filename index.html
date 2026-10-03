@@ -1,45 +1,78 @@
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esame Facile - Homepage</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     * { box-sizing: border-box; }
-    body { 
-      font-family: 'Roboto', Arial, sans-serif; 
-      margin:0; 
-      padding:0; 
-      background:#f5f5f5; 
-      color:#333;
-      padding-top:90px; /* pour header fixe */
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      padding-top: 90px;
+      background: #f5f5f5;
+      color: #333;
     }
+
     a { text-decoration: none; }
-    /* ----------- HEADER ----------------- */
-    header { 
-      background:#004080; 
-      color:white; 
-      padding:15px 30px; 
-      display:flex; 
-      flex-wrap:wrap; 
-      justify-content:space-between; 
-      align-items:center; 
+
+    header {
+      background: #004080;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 1000;
     }
-    header .logo { display:flex; align-items:center; margin-bottom:10px; }
-    header .logo img { height:50px; margin-right:15px; }
-    header nav { display:flex; flex-wrap:wrap; gap:15px; }
-    header nav a { color:white; font-weight:bold; }
-    /* ----------- HERO ----------------- */
-    .hero { background:linear-gradient(to right,#004080,#0080ff); color:white; text-align:center; padding:20px; }
-    .hero h2 { font-size:1.6em; margin-bottom:8px; }
-    .hero p { font-size:1em; }
-    /* ----------- ABOUT ----------------- */
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    header .logo img {
+      height: 50px;
+      margin-right: 15px;
+    }
+
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    header nav a {
+      color: white;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #004080, #0080ff);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h2 {
+      font-size: 1.6em;
+      margin-bottom: 8px;
+    }
+
+    .hero p { font-size: 1em; }
+
     .about {
       display: flex;
       flex-wrap: wrap;
@@ -49,184 +82,513 @@
       background: #fff;
       gap: 15px;
     }
+
     .about-image, .about-text {
       flex: 1 1 300px;
       padding: 10px;
     }
+
     .about-image img {
       max-width: 100%;
       border-radius: 10px;
     }
-    .about-text h3 { font-size:1.5em; margin-bottom:12px; }
-    .about-text p { font-size:1em; line-height:1.4; text-align:justify; }
-    /* ----------- FORMULAIRE ----------------- */
-    .form-section, .signup-section { padding:20px; text-align:center; background:#e6f2ff; display:none; }
-    .form-section.active, .signup-section.active { display:block; }
-    form { max-width:400px; margin:0 auto; background:#fff; padding:15px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:left; }
-    form label { font-weight:bold; margin-top:8px; display:block; }
-    input { display:block; width:100%; padding:8px; margin:6px 0 10px; border:1px solid #ccc; border-radius:5px; font-size:1em; }
-    button { width:100%; padding:10px; background:#004080; color:white; border:none; border-radius:5px; cursor:pointer; font-size:1em; transition:0.3s; }
-    button:hover { background:#0066cc; }
-    .toggle-link { display:block; margin-top:8px; text-align:center; cursor:pointer; color:#004080; text-decoration:underline; font-size:0.95em; }
-    /* ----------- FOOTER ----------------- */
-    footer { background:#004080; color:white; padding:20px; text-align:center; font-size:0.9em; }
-    footer a { color:white; }
-    /* ----------- RESPONSIVE ----------------- */
+
+    .about-text h3 {
+      font-size: 1.5em;
+      margin-bottom: 12px;
+    }
+
+    .about-text p {
+      font-size: 1em;
+      line-height: 1.5;
+      text-align: justify;
+    }
+
+    .form-section, .signup-section {
+      padding: 20px;
+      text-align: center;
+      background: #e6f2ff;
+      display: none;
+    }
+
+    .form-section.active, .signup-section.active {
+      display: block;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    form label {
+      font-weight: bold;
+      margin-top: 8px;
+      display: block;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #004080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+
+    button:hover { background: #0066cc; }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .toggle-link {
+      display: block;
+      margin-top: 12px;
+      text-align: center;
+      cursor: pointer;
+      color: #004080;
+      text-decoration: underline;
+      font-size: 0.95em;
+    }
+
+    .message {
+      display: none;
+      max-width: 400px;
+      margin: 12px auto;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .message.visible { display: block; }
+    .message.error { background: #ffe5e5; color: #9b1c1c; }
+    .message.success { background: #e4f7e9; color: #176b35; }
+
+    footer {
+      background: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+
+    footer a { color: white; }
+
     @media (max-width: 768px) {
-      body { padding-top: 130px; font-size:1em; }
+      body {
+        padding-top: 130px;
+        font-size: 1em;
+      }
+
       header {
         flex-direction: column;
         align-items: flex-start;
         padding: 12px 8px;
-        gap: 0;
-        height:auto;
       }
+
       header .logo {
-        margin-bottom:0;
-        flex-direction:row;
-        width:100%;
-        justify-content:flex-start;
+        margin-bottom: 0;
+        width: 100%;
       }
-      header .logo img { height:40px; margin-right:10px; }
-      header h1 { font-size:1.3em; }
+
+      header .logo img {
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      header h1 { font-size: 1.3em; }
+
       header nav {
-        width:100%;
-        margin-top:8px;
-        background:#003366;
-        padding:7px 0;
-        border-radius:5px;
-        justify-content:center;
-        gap:13px;
+        width: 100%;
+        margin-top: 8px;
+        background: #003366;
+        padding: 10px 0;
+        border-radius: 5px;
+        justify-content: center;
+        gap: 13px;
       }
-      .hero { padding:16px 8px; font-size:1.05em; }
-      .hero h2 { font-size:1.25em; margin-bottom:10px; }
-      /* ----------- ABOUT MOBILE ----------------- */
+
+      .hero { padding: 16px 8px; }
+      .hero h2 { font-size: 1.25em; }
+
       .about {
         flex-direction: column;
-        padding: 10px 8px;  /* réduit padding */
-        gap: 5px;           /* réduit espace image/texte */
+        padding: 10px 8px;
+        gap: 5px;
       }
-      .about-image, .about-text { padding:0; }
-      .about-text { text-align:center; font-size:1em; }
-      .about-image img { max-width:100%; height:auto; border-radius:10px; }
-      .form-section, .signup-section { padding:14px 8px; }
-      form { max-width:98vw; padding:10px; }
-      button { font-size:1.1em; padding:12px; }
-      .toggle-link { font-size:1em; }
-      footer { font-size:0.95em; padding:14px 6px; }
-      footer p, footer a { font-size:1em; }
+
+      .about-image, .about-text { padding: 0; }
+      .about-text { text-align: center; }
+      .about-image img { height: auto; }
+
+      .form-section, .signup-section { padding: 14px 8px; }
+      form { max-width: 98vw; padding: 12px; }
+      footer { padding: 14px 6px; }
     }
   </style>
+
+  <!-- Bibliothèque officielle Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 
-  <!-- Header -->
   <header>
     <div class="logo">
       <img src="Media/logo.png" alt="Logo Esame Facile">
       <h1>Esame Facile</h1>
     </div>
+
     <nav>
       <a href="#">Home</a>
-      <a href="#">Chi siamo</a>
-      <a href="#">Contatti</a>
+      <a href="#about">Chi siamo</a>
+      <a href="#contatti">Contatti</a>
     </nav>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
     <h2>Prepara e supera la tua certificazione d’italiano senza stress!</h2>
     <p>Esercitazioni autentiche, correzioni immediate e progressi garantiti.</p>
   </section>
 
-  <!-- About -->
-  <section class="about">
+  <section class="about" id="about">
     <div class="about-image">
       <img src="Media/accueil.jpg" alt="Studente che si allena online">
     </div>
+
     <div class="about-text">
       <h3>Perché scegliere Esame Facile?</h3>
-      <p>Con Esame Facile prepararti alle certificazioni di italiano non è mai stato così semplice e coinvolgente! La nostra piattaforma interattiva ti offre esercizi autentici, simili a quelli degli esami CILS, PLIDA, CELI e CERT.IT, con soluzioni commentate per capire subito ogni errore. Segui i tuoi progressi giorno dopo giorno, allenati in autonomia e concentrati sulle aree che vuoi migliorare di più. Tutto è pensato per farti avanzare rapidamente, con fiducia e senza stress, fino a raggiungere l’obiettivo: superare l’esame con successo!</p>
+      <p>
+        Con Esame Facile prepararti alle certificazioni di italiano non è mai
+        stato così semplice e coinvolgente! La nostra piattaforma interattiva
+        ti offre esercizi autentici, simili a quelli degli esami CILS, PLIDA,
+        CELI e CERT.IT, con soluzioni commentate per capire subito ogni errore.
+        Segui i tuoi progressi giorno dopo giorno, allenati in autonomia e
+        concentrati sulle aree che vuoi migliorare di più. Tutto è pensato per
+        farti avanzare rapidamente, con fiducia e senza stress, fino a
+        raggiungere l’obiettivo: superare l’esame con successo!
+      </p>
     </div>
   </section>
 
-  <!-- Formulaire connexion -->
+  <!-- Connexion -->
   <section class="form-section active" id="login">
     <h3>Accedi per iniziare</h3>
-    <form id="loginForm">
-      <label for="nome-login">Nome :</label>
-      <input type="text" id="nome-login" name="nome-login" required>
+    <div id="loginMessage" class="message" role="status" aria-live="polite"></div>
 
+    <form id="loginForm">
       <label for="email">Email :</label>
-      <input type="email" id="email" name="email" required>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        autocomplete="email"
+        required
+      >
 
       <label for="password">Password :</label>
-      <input type="password" id="password" name="password" required>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        autocomplete="current-password"
+        required
+      >
 
       <button type="submit">Accedi</button>
-      <span class="toggle-link" onclick="toggleForm('signup')">Crea un account</span>
+
+      <span class="toggle-link" id="showSignup">
+        Crea un account
+      </span>
     </form>
   </section>
 
-  <!-- Formulaire inscription -->
+  <!-- Inscription -->
   <section class="signup-section" id="signup">
     <h3>Crea un account</h3>
+    <div id="signupMessage" class="message" role="status" aria-live="polite"></div>
+
     <form id="signupForm">
       <label for="nome">Nome :</label>
-      <input type="text" id="nome" name="nome" required>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        autocomplete="given-name"
+        required
+      >
 
       <label for="cognome">Cognome :</label>
-      <input type="text" id="cognome" name="cognome" required>
+      <input
+        type="text"
+        id="cognome"
+        name="cognome"
+        autocomplete="family-name"
+        required
+      >
 
       <label for="email-signup">Email :</label>
-      <input type="email" id="email-signup" name="email-signup" required>
+      <input
+        type="email"
+        id="email-signup"
+        name="email-signup"
+        autocomplete="email"
+        required
+      >
 
       <label for="password-signup">Password :</label>
-      <input type="password" id="password-signup" name="password-signup" required>
+      <input
+        type="password"
+        id="password-signup"
+        name="password-signup"
+        autocomplete="new-password"
+        minlength="8"
+        required
+      >
 
       <label for="confirm-password">Conferma password :</label>
-      <input type="password" id="confirm-password" name="confirm-password" required>
+      <input
+        type="password"
+        id="confirm-password"
+        name="confirm-password"
+        autocomplete="new-password"
+        minlength="8"
+        required
+      >
 
       <button type="submit">Iscriviti</button>
-      <span class="toggle-link" onclick="toggleForm('login')">Hai già un account? Accedi</span>
+
+      <span class="toggle-link" id="showLogin">
+        Hai già un account? Accedi
+      </span>
     </form>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Esame Facile - Tutti i diritti riservati</p>
+  <footer id="contatti">
+    <p>&copy; 2026 Esame Facile - Tutti i diritti riservati</p>
     <p><a href="#">Note legali</a> | <a href="#">Privacy</a></p>
   </footer>
 
-  <!-- Scripts -->
   <script>
-    function toggleForm(form) {
-      document.getElementById('login').classList.remove('active');
-      document.getElementById('signup').classList.remove('active');
-      document.getElementById(form).classList.add('active');
-      window.scrollTo({ top: document.getElementById(form).offsetTop - 20, behavior: 'smooth' });
+    // CONFIGURAZIONE SUPABASE
+    const SUPABASE_URL = 'https://eiyobroonjfugujjvosc.supabase.co';
+
+    // Remplace cette valeur par ta clé sb_publishable_ complète.
+    // Ne jamais utiliser une clé sb_secret_ ou service_role ici.
+    const SUPABASE_KEY = 'COLLE_ICI_TA_CLE_PUBLISHABLE';
+
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    const loginMessage = document.getElementById('loginMessage');
+    const signupMessage = document.getElementById('signupMessage');
+
+    function showMessage(element, text, type) {
+      element.textContent = text;
+      element.className = 'message visible ' + type;
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nomeLogin = document.getElementById('nome-login').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      if(nomeLogin && email && password){
-        sessionStorage.setItem('username', nomeLogin);
-        sessionStorage.setItem('loggedIn', 'true');
-        window.location.href = 'Menu/esami.html';
-      } else { alert('Inserisci nome, email e password.'); }
+    function clearMessage(element) {
+      element.textContent = '';
+      element.className = 'message';
+    }
+
+    function toggleForm(formName) {
+      document.getElementById('login').classList.toggle(
+        'active',
+        formName === 'login'
+      );
+
+      document.getElementById('signup').classList.toggle(
+        'active',
+        formName === 'signup'
+      );
+
+      clearMessage(loginMessage);
+      clearMessage(signupMessage);
+
+      const section = document.getElementById(formName);
+      window.scrollTo({
+        top: section.getBoundingClientRect().top + window.scrollY - 20,
+        behavior: 'smooth'
+      });
+    }
+
+    document.getElementById('showSignup').addEventListener('click', () => {
+      toggleForm('signup');
     });
 
-    document.getElementById('signupForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      sessionStorage.setItem('username', nome);
-      sessionStorage.setItem('loggedIn', 'true');
-      window.location.href = 'Menu/esami.html';
+    document.getElementById('showLogin').addEventListener('click', () => {
+      toggleForm('login');
+    });
+
+    let db = null;
+
+    if (
+      window.supabase &&
+      SUPABASE_URL.startsWith('https://') &&
+      SUPABASE_KEY.startsWith('sb_publishable_') &&
+      !SUPABASE_KEY.includes('COLLE_ICI')
+    ) {
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    // INSCRIPTION
+    signupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearMessage(signupMessage);
+
+      if (!db) {
+        showMessage(
+          signupMessage,
+          'Configurazione Supabase manquante : vérifie la clé publique dans le code.',
+          'error'
+        );
+        return;
+      }
+
+      const nome = document.getElementById('nome').value.trim();
+      const cognome = document.getElementById('cognome').value.trim();
+      const email = document.getElementById('email-signup').value.trim();
+      const password = document.getElementById('password-signup').value;
+      const confirmation = document.getElementById('confirm-password').value;
+      const button = signupForm.querySelector('button[type="submit"]');
+
+      if (password.length < 8) {
+        showMessage(
+          signupMessage,
+          'La password deve contenere almeno 8 caratteri.',
+          'error'
+        );
+        return;
+      }
+
+      if (password !== confirmation) {
+        showMessage(
+          signupMessage,
+          'Le password non corrispondono.',
+          'error'
+        );
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = 'Iscrizione in corso...';
+
+      try {
+        const { data, error } = await db.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: 'https://esamefacile.vercel.app/',
+            data: {
+              first_name: nome,
+              last_name: cognome
+            }
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.session) {
+          showMessage(
+            signupMessage,
+            'Account creato con successo. Ora puoi accedere.',
+            'success'
+          );
+        } else {
+          showMessage(
+            signupMessage,
+            'Iscrizione ricevuta! Controlla la tua email e clicca sul link di conferma prima di accedere.',
+            'success'
+          );
+        }
+
+        signupForm.reset();
+      } catch (error) {
+        console.error('Errore iscrizione:', error);
+
+        showMessage(
+          signupMessage,
+          'Iscrizione non riuscita: ' + error.message,
+          'error'
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Iscriviti';
+      }
+    });
+
+    // CONNEXION
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearMessage(loginMessage);
+
+      if (!db) {
+        showMessage(
+          loginMessage,
+          'Configurazione Supabase manquante : vérifie la clé publique dans le code.',
+          'error'
+        );
+        return;
+      }
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const button = loginForm.querySelector('button[type="submit"]');
+
+      button.disabled = true;
+      button.textContent = 'Accesso in corso...';
+
+      try {
+        const { data, error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        sessionStorage.setItem(
+          'username',
+          data.user.user_metadata.first_name || email
+        );
+
+        window.location.href = 'Menu/esami.html';
+      } catch (error) {
+        console.error('Errore accesso:', error);
+
+        showMessage(
+          loginMessage,
+          'Accesso non riuscito. Verifica email e password e assicurati di aver confermato il tuo indirizzo email.',
+          'error'
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Accedi';
+      }
     });
   </script>
 
 </body>
 </html>
+```
